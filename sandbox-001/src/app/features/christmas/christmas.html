@@ -1,1 +1,8 @@
-<p>christmas works!</p>
+<div>{{ dates.now() | date: 'medium'}}</div>
+<div>Next Christmas: {{ dates.nextChristmas() | date: 'medium'}}</div>
+@if (dates.isChristmas()) {
+    <div>IT'S CHRISTMAS</div>
+}
+@else {
+    <div>Time until Christmas: {{ dates.timeUntilChristmas().days }} days | {{ dates.timeUntilChristmas().hours }} hours | {{dates.timeUntilChristmas().minutes }} minutes | {{ dates.timeUntilChristmas().seconds }} seconds </div>
+}
