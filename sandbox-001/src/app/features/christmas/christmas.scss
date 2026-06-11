@@ -1,7 +1,7 @@
 .christmas-feature {
     display: grid;
     height: 100%;
-    font-family: cursive;
+    font-family: 'Times New Roman', Times,  serif;
     position: relative;
     overflow: hidden;
 }
@@ -32,8 +32,15 @@
 .countdown-title {
     display: grid;
     align-items: center;
-    font-size: 4cqi;
-    margin: 2cqi;
+    
+    @media (orientation: landscape) {
+        font-size: 6cqi;
+        margin: 2cqi;
+    }
+    @media (orientation: portrait) {
+        font-size: 8cqi;
+        margin: 2cqi;
+    }
 }
 
 .countdown-timer {
