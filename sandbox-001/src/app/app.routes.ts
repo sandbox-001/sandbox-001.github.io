@@ -1,3 +1,29 @@
 import { Routes } from '@angular/router';
+import { Homepage } from './features/homepage/homepage';
+import { Christmas } from './features/christmas/christmas';
+import { MoviesAndShows } from './features/movies-and-shows/movies-and-shows';
+import { Recipes } from './features/recipes/recipes';
+import { GiveUsThisDayOur } from './shared/components/give-us-this-day-our/give-us-this-day-our';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+    {
+        path: '',
+        component: Homepage
+    },
+    {
+        path: 'christmas',
+        component: Christmas
+    },
+    {
+        path: 'movies-and-shows',
+        component: MoviesAndShows
+    },
+    {
+        path: 'recipes',
+        component: Recipes
+    },
+    {
+        path: '**',
+        component: GiveUsThisDayOur
+    }
+];
