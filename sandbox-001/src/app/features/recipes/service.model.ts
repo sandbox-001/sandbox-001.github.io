@@ -12,7 +12,6 @@ export interface Recipe {
     instructions: Instruction[];
 }
 
-
 interface Ingredient {
     item: string;
     amount: number;
