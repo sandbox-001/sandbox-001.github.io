@@ -4,18 +4,18 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
-@use './custom-stylesheets/modern-kbeauty-minimalist.scss' as mkm;
-@use './custom-stylesheets/obangsaek.scss' as obangsaek;
+@use './custom-stylesheets/mountain.scss' as mountain;
+@use './custom-stylesheets/jeju.scss' as jeju;
+@use './custom-stylesheets/seoul-cherry-blossom.scss' as seoul-cherry-blossom;
 
 html {
-  // height: 100%;
   @include mat.theme(
     (
       color: (
         // primary: mat.$azure-palette,
         // tertiary: mat.$blue-palette,
-        primary: mkm.$primary-palette,
-        tertiary: mkm.$tertiary-palette,
+        primary: mountain.$primary-palette,
+        tertiary: mountain.$tertiary-palette,
         // primary: obangsaek.$primary-palette,
         // tertiary: obangsaek.$tertiary-palette,
       ),
@@ -35,11 +35,63 @@ html {
 
 }
 
+// Compile and apply the obangsaek Stylesheet via a class modifier
+html.jeju {
+  @include mat.theme(
+    (
+      color: (
+        primary: jeju.$primary-palette,
+        tertiary: jeju.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  // Re-apply component overrides to use the updated Obangsaek palette colors
+  @include mat.toolbar-overrides(( 
+    container-background-color: var(--mat-sys-primary-container), 
+    container-text-color: var(--mat-sys-on-primary-container) 
+  )); 
+  
+  @include mat.card-overrides(( 
+    elevated-container-color: var(--mat-sys-secondary-container), 
+  ));
+}
+
+// Compile and apply the seoul-cherry-blossom Stylesheet via a class modifier
+html.seoul-cherry-blossom {
+  @include mat.theme(
+    (
+      color: (
+        primary: seoul-cherry-blossom.$primary-palette,
+        tertiary: seoul-cherry-blossom.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  // Re-apply component overrides to use the updated Obangsaek palette colors
+  @include mat.toolbar-overrides(( 
+    container-background-color: var(--mat-sys-primary-container), 
+    container-text-color: var(--mat-sys-on-primary-container) 
+  )); 
+  
+  @include mat.card-overrides(( 
+    elevated-container-color: var(--mat-sys-secondary-container), 
+  ));
+}
+
+:root {
+  --color-scheme: light;
+}
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
   // user's system settings.
-  color-scheme: light;
+  color-scheme: var(--color-scheme);
 
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these

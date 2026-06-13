@@ -1,12 +1,24 @@
 
 <mat-toolbar>
-    <div class="buttons">
+    <div class="left-buttons">
         <button matIconButton routerLink="/">
             <mat-icon>home</mat-icon>
         </button>
     </div>
-    <a class="image" routerLink="/give-us-this-day-our">
-        <img class="not-found-image" src="/duck_on_bread.png">
-    </a>
-    
+    <div class="middle-buttons">
+        <button matButton="filled" (click)="themeService.toggleTheme()">{{themeService.theme()}}</button>
+        <button matIconButton (click)="themeService.toggleMode()">
+            @if (themeService.mode() === 'light') {
+                <mat-icon>light_mode</mat-icon>
+            }
+            @else {
+                <mat-icon>dark_mode</mat-icon>
+            }
+        </button>
+    </div>
+    <div class="right-buttons">
+        <a class="image" routerLink="/give-us-this-day-our">
+            <img class="not-found-image" src="/duck_on_bread.png">
+        </a>
+    </div>
 </mat-toolbar>
