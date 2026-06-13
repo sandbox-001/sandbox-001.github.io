@@ -7,7 +7,7 @@ import { Instruction, Recipe, RecipeResponse } from '../service.model';
 @Service()
 export class RecipesService {
     private http = inject(HttpClient)
-    private jsonUrl = '/recipes.data.json'
+    private jsonUrl = '/recipes/recipes.data.json'
 
     private getRecipesResponse(): Observable<RecipeResponse> {
         return this.http.get<RecipeResponse>(this.jsonUrl)
