@@ -1,41 +1,90 @@
 import { DOCUMENT, inject, Service, signal } from '@angular/core';
 
+// Closed set of specific user roles
+export enum Modes {
+  Light = 'light',
+  Dark = 'dark'
+}
+
+// Closed set of specific user roles
+export enum Themes {
+  Mountain = 'mountain',
+  Jeju = 'jeju',
+  SeoulCherryBlossom = 'seoul-cherry-blossom'
+}
+
+//산
+//제주
+//벚꽃
+
 @Service()
 export class ThemeService {
     private document = inject(DOCUMENT);
     
-    public mode = signal('light');
-    public theme = signal('산');
-    
+    public mode = signal(Modes.Light);
+    public theme = signal(Themes.Mountain);
+
+    private setMode(mode: Modes) {
+        const root = this.document.documentElement;
+
+        this.mode.update(() => mode)
+        root.style.setProperty('--color-scheme', this.mode())
+        localStorage.setItem('mode', this.mode());
+    }
+
+    private setTheme(theme: Themes) {
+        const root = this.document.documentElement;
+
+        Object.values(Themes).forEach((enumTheme) => {
+            if (enumTheme !== theme) {
+                root.classList.remove(enumTheme);
+            }
+        })
+
+        this.theme.update(() => theme)
+        root.classList.add(this.theme())
+        localStorage.setItem('theme', this.theme());
+    }
     
     public toggleMode() {
         const root = this.document.documentElement;
 
-        if (this.mode() === 'light') {
-            this.mode.update(() => 'dark')
+        if (this.mode() === Modes.Light) {
+            this.setMode(Modes.Dark)
         }
         else {
-            this.mode.update(() => 'light')
+            this.setMode(Modes.Light)
         }
-
-        root.style.setProperty('--color-scheme', this.mode())
     }
 
     public toggleTheme() {
         const root = this.document.documentElement;
 
-        if (this.theme() === '산') {
-            this.theme.update(() => '제주')
-            root.classList.add('jeju')
+        if (this.theme() === Themes.Mountain) {
+            this.setTheme(Themes.Jeju)
         }
-        else if (this.theme() === '제주') {
-            root.classList.remove('jeju')
-            this.theme.update(() => '벚꽃')
-            root.classList.add('seoul-cherry-blossom')
+        else if (this.theme() === Themes.Jeju) {
+            this.setTheme(Themes.SeoulCherryBlossom)
         }
         else {
-            this.theme.update(() => '산')
-            root.classList.remove('seoul-cherry-blossom')
+            this.setTheme(Themes.Mountain)
         }
+    }
+
+    constructor() {
+        if (localStorage.getItem('mode')) {
+            this.setMode(localStorage.getItem('mode')! as Modes)
+        }
+        else {
+            this.setMode(this.mode())
+        }
+
+        if (localStorage.getItem('theme')) {
+            this.setTheme(localStorage.getItem('theme')! as Themes)
+        }
+        else {
+            this.setTheme(this.theme())
+        }
+        
     }
 }

@@ -1,10 +1,11 @@
 import { Component, computed, inject, Input, input } from '@angular/core';
-import { Recipe } from '../../service.model';
 import { RecipesService } from '../../services/recipes-service';
+import { ANGULAR_MATERIAL_MODULES } from '../../../../shared/modules/angular-material.module';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-page',
-  imports: [],
+  imports: [ANGULAR_MATERIAL_MODULES, RouterLink],
   templateUrl: './recipe-page.html',
   styleUrl: './recipe-page.scss',
 })

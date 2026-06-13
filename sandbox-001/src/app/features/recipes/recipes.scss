@@ -23,12 +23,14 @@ mat-card-header {
 
 mat-card-title-group {
     display: block;
+
 }
 
 mat-card-title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 mat-card-content {

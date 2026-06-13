@@ -6,9 +6,30 @@
         </button>
     </div>
     <div class="middle-buttons">
-        <button matButton="filled" (click)="themeService.toggleTheme()">{{themeService.theme()}}</button>
+        <!-- <button matButton="filled" (click)="themeService.toggleTheme()">
+            @if (themeService.theme() === themesEnum.Mountain) {
+                산
+            }
+            @else if (themeService.theme() === themesEnum.Jeju) {
+                제주
+            }
+            @else {
+                벚꽃
+            }
+        </button> -->
+        <button matIconButton (click)="themeService.toggleTheme()">
+             @if (themeService.theme() === themesEnum.Mountain) {
+                <mat-icon>landscape</mat-icon>
+            }
+            @else if (themeService.theme() === themesEnum.Jeju) {
+                <mat-icon>sailing</mat-icon>
+            }
+            @else {
+                <mat-icon>local_florist</mat-icon>
+            }
+        </button>
         <button matIconButton (click)="themeService.toggleMode()">
-            @if (themeService.mode() === 'light') {
+            @if (themeService.mode() === modesEnum.Light) {
                 <mat-icon>light_mode</mat-icon>
             }
             @else {
