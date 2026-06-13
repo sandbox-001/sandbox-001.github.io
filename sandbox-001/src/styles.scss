@@ -30,10 +30,7 @@ html {
   ));
 
   @include mat.card-overrides((
-    // elevated-container-color: orange,
-    // filled-container-color: red,
-    outlined-container-color: yellow,
-    // elevated-container-elevation: red,
+    elevated-container-color: var(--mat-sys-secondary-container),
   ));
 
 }

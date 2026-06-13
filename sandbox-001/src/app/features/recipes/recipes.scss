@@ -12,7 +12,9 @@
     }
 }
 
-mat-card {
+mat-card:hover {
+        cursor: pointer;
+        opacity: 50%;
 }
 
 mat-card-header {
@@ -39,4 +41,18 @@ mat-card-content {
         line-clamp: 3;
         overflow: hidden;
     }
+}
+
+
+
+@keyframes growAndShrink {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3); /* Grows to 130% of its initial size */
+  }
+  50% {
+    transform: scale(1);
+  }
 }

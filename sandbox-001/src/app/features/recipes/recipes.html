@@ -1,7 +1,7 @@
 @if (recipesService.getRecipeList(); as recipes) {
     <div class="recipes-feature">
         @for (recipe of recipes; track recipe.id) {
-            <mat-card [routerLink]="['/recipes', recipe.id]">
+            <mat-card [routerLink]="['/recipes', recipe.id]" matRipple [matTooltip]="recipe.name" matTooltipTouchGestures="off">
                 <mat-card-header>
                     <mat-card-title-group>
                         <mat-card-title>{{ recipe.name }}</mat-card-title>

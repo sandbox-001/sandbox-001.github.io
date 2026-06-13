@@ -124,63 +124,73 @@
       ]
     },
     {
-      "id": 5,
-      "name": "Egg salad 2",
-      "description": "A simple egg salad recipe",
+      "id": 3,
+      "name": "Chipotle chicken",
+      "description": "A chipotle chicken recipe from a former employee",
       "author": "me",
       "image": "/recipe/egg_salad.png",
       "ingredients": [
         {
-          "item": "eggs",
-          "amount": 3,
-          "unit": ""
+          "item": "skinless chicken thigh",
+          "amount": 1,
+          "unit": "Pound"
         },
         {
-          "item": "green onions (thinly sliced",
-          "amount": 2,
-          "unit": ""
-        },
-        {
-          "item": "mayonnaise",
+          "item": "blended chipotle peppers in adobo (brand: San Marcos)",
           "amount": 2,
           "unit": "Tablespoon"
         },
         {
-          "item": "mustard",
+          "item": "garlic powder",
+          "amount": 0.33,
+          "unit": "Teaspoon"
+        },
+        {
+          "item": "onion powder",
+          "amount": 0.33,
+          "unit": "Teaspoon"
+        },
+        {
+          "item": "cumin powder",
+          "amount": 0.33,
+          "unit": "Teaspoon"
+        },
+        {
+          "item": "oregano",
+          "amount": 0.33,
+          "unit": "Teaspoon"
+        },
+        {
+          "item": "salt",
           "amount": 1,
           "unit": "Teaspoon"
         },
         {
           "item": "black pepper",
-          "amount": 2,
-          "unit": "pinches"
-        },
-        {
-          "item": "salt",
-          "amount": 3,
+          "amount": 1,
           "unit": "pinches"
         }
       ],
       "instructions": [
         {
           "step": 1,
-          "text": "Bring water to a boil"
+          "text": "Mix the seasoning and adobo"
         },
         {
           "step": 2,
-          "text": "Boil eggs for 12 min"
+          "text": "Marinate the chicken overnight (12+ hours for enhanced flavor)"
         },
         {
           "step": 3,
-          "text": "Put eggs in cold water for 2 min, and then peel"
+          "text": "Coat the chicken in olive oil"
         },
         {
           "step": 4,
-          "text": "Mash the peeled eggs in a bowl with your hands"
+          "text": "Bake at 425F for ~40 minutes"
         },
         {
           "step": 5,
-          "text": "Add the rest of the ingredients in and mix thoroughly"
+          "text": "Chop chicken thighs up into pieces"
         }
       ]
     },
