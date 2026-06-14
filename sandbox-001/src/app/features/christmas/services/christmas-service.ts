@@ -9,8 +9,7 @@ export interface Duration {
 }
 
 @Service()
-export class Dates {
-    public now = signal(new Date());
+export class ChristmasService {public now = signal(new Date());
     currentYear = computed(() => this.now().getFullYear());
     nextChristmas = computed(() => {
         var christmas = new Date(this.currentYear(), 11, 25);
@@ -65,8 +64,8 @@ export class Dates {
         }
     });
 
-    numberOfSnowflakes = 300;
-    public snowflakeArray = signal(Array.from({ length: this.numberOfSnowflakes }));
+    numberOfSnowflakes = computed(() => (365 - this.timeUntilChristmas().days));
+    public snowflakeArray = signal(Array.from({ length: this.numberOfSnowflakes() }));
 
     
     private subscription: Subscription = timer(0, 1000).pipe(map(() => {
