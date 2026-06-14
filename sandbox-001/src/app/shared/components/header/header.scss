@@ -1,4 +1,8 @@
 
+mat-toolbar {
+    gap: 1em;
+}
+
 .left-buttons {
     flex: 1;
 }
@@ -11,7 +15,6 @@
 
 .right-buttons {
     height: 100%;
-    margin: 0 0 0 1em;
 }
 
 .image {
