@@ -10,7 +10,7 @@
     display: grid;
     justify-self: center;
     align-self: center;
-    color: white;
+    color: var(--mat-sys-primary-fixed);
 
     @media (orientation: landscape) {
         font-size: 6cqi;
@@ -32,7 +32,7 @@
 .countdown-title {
     display: grid;
     align-items: center;
-    color: white;
+    color: var(--mat-sys-primary-fixed);
     
     @media (orientation: landscape) {
         font-size: 6cqi;
@@ -62,8 +62,8 @@
     display: grid;
     justify-items: center; 
 
-    background-color: var(--mat-sys-on-secondary-container);
-    color: var(--mat-sys-on-secondary);
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
     border-radius: 10px;
     
     @media (orientation: landscape) {
