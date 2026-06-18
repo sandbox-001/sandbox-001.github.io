@@ -41,7 +41,7 @@ export class MoviesAndShowsService {
     loadedSearchMultiPages = signal<SearchMultiResponse[]>([])
     loadedTrendingMultiPages = signal<TrendingMultiResponse[]>([])
 
-    timeWindow = signal<TimeWindow>(TimeWindow.Day)
+    timeWindow = signal<TimeWindow>(TimeWindow.Week)
 
     combinedLoadedMediaResults = computed<CombinedMediaResult[]>(() => {
         const combinedResults: CombinedMediaResult[] = [];
