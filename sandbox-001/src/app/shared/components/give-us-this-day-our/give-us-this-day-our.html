@@ -4,4 +4,20 @@
         <div>일용할 양식</div>
     </div>
     <img class="not-found-image" src="/duck_on_bread.png">
+    
+
+    <!-- Element that follows the mouse around -->
+    <img 
+        class="follower-element" 
+        [style.transform]="'translate3d(' + currentCoords().x + 'px, ' + currentCoords().y + 'px, 0)'"
+        src="/duck_on_bread.png"
+        >
+
+    <!-- Generates an element that will appear and fade on click -->
+    @for (item of elements(); track item.id) {
+        <img 
+            class="not-found-image follower-stamp animate-fade" 
+            src="/duck_on_bread.png"
+            [ngStyle]="{ 'left': item.left, 'top': item.top }">
+    }
 </div>
