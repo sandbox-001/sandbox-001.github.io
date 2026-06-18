@@ -8,11 +8,11 @@
     padding: 1em;
 
     @media (orientation: landscape) {
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         
     }
     @media (orientation: portrait) {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
 img {
