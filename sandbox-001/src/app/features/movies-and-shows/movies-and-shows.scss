@@ -21,9 +21,19 @@ img {
     object-fit: cover;
 }
 
+
+mat-card {
+    transform: scale(1);
+    transition: transform 0.3s ease-out;
+}
+
 mat-card:hover {
         cursor: pointer;
         opacity: 50%;
+
+        transform: scale(1.05);
+        transition: transform 0.3s ease-out;
+        // animation: growAndShrink .5s infinite;
 }
 
 mat-card-content {

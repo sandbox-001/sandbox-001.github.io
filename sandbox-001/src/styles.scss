@@ -14,10 +14,6 @@ html {
       color: (
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
-        // primary: mountain.$primary-palette,
-        // tertiary: mountain.$tertiary-palette,
-        // primary: obangsaek.$primary-palette,
-        // tertiary: obangsaek.$tertiary-palette,
       ),
       typography: Roboto,
       density: 0,
@@ -47,16 +43,6 @@ html.mountain {
       density: 0,
     )
   );
-
-  // Re-apply component overrides to use the updated Obangsaek palette colors
-  @include mat.toolbar-overrides(( 
-    container-background-color: var(--mat-sys-primary-container), 
-    container-text-color: var(--mat-sys-on-primary-container) 
-  )); 
-  
-  @include mat.card-overrides(( 
-    elevated-container-color: var(--mat-sys-secondary-container), 
-  ));
 }
 
 // Compile and apply the jeju Stylesheet via a class modifier
@@ -71,16 +57,6 @@ html.jeju {
       density: 0,
     )
   );
-
-  // Re-apply component overrides to use the updated Obangsaek palette colors
-  @include mat.toolbar-overrides(( 
-    container-background-color: var(--mat-sys-primary-container), 
-    container-text-color: var(--mat-sys-on-primary-container) 
-  )); 
-  
-  @include mat.card-overrides(( 
-    elevated-container-color: var(--mat-sys-secondary-container), 
-  ));
 }
 
 // Compile and apply the seoul-cherry-blossom Stylesheet via a class modifier
@@ -95,16 +71,6 @@ html.seoul-cherry-blossom {
       density: 0,
     )
   );
-
-  // Re-apply component overrides to use the updated Obangsaek palette colors
-  @include mat.toolbar-overrides(( 
-    container-background-color: var(--mat-sys-primary-container), 
-    container-text-color: var(--mat-sys-on-primary-container) 
-  )); 
-  
-  @include mat.card-overrides(( 
-    elevated-container-color: var(--mat-sys-secondary-container), 
-  ));
 }
 
 
