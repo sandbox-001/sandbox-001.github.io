@@ -23,8 +23,10 @@ img {
 
 
 mat-card {
+
+    
     transform: scale(1);
-    transition: transform 0.3s ease-out;
+    transition: transform 0.5s ease-out;
 }
 
 mat-card:hover {
@@ -32,8 +34,7 @@ mat-card:hover {
         opacity: 50%;
 
         transform: scale(1.05);
-        transition: transform 0.3s ease-out;
-        // animation: growAndShrink .5s infinite;
+        transition: transform 0.2s ease-out;
 }
 
 mat-card-content {
