@@ -54,6 +54,11 @@
 
 
 .follower-stamp {
+  display: grid;
+  max-width: 20vw;
+  max-height: 20vh;
+  user-select: none;
+
   position: absolute;
 
   pointer-events: none; /* Prevents stacked bubbles from intercepting clicks */

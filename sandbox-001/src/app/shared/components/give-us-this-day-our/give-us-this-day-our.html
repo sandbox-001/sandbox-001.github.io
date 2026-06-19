@@ -16,7 +16,7 @@
     <!-- Generates an element that will appear and fade on click -->
     @for (item of elements(); track item.id) {
         <img 
-            class="not-found-image follower-stamp animate-fade" 
+            class="follower-stamp animate-fade" 
             src="/duck_on_bread.png"
             [ngStyle]="{ 'left': item.left, 'top': item.top }">
     }
