@@ -28,12 +28,23 @@
                 <mat-icon>local_florist</mat-icon>
             }
         </button>
+        
         <button matIconButton (click)="themeService.toggleMode()">
             @if (themeService.currentFeatureMode().mode === modesEnum.Light) {
-                <mat-icon>light_mode</mat-icon>
+                @if (themeService.currentFeatureMode().feature === featureEnum.MoviesAndShows) {
+                    <mat-icon>flashlight_on</mat-icon>
+                }
+                @else {
+                    <mat-icon>light_mode</mat-icon>
+                }
             }
             @else {
-                <mat-icon>dark_mode</mat-icon>
+                @if (themeService.currentFeatureMode().feature === featureEnum.MoviesAndShows) {
+                    <mat-icon>flashlight_off</mat-icon>
+                }
+                @else {
+                    <mat-icon>dark_mode</mat-icon>
+                }
             }
         </button>
     </div>

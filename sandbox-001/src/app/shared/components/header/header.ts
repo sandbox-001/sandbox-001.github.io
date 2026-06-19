@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ANGULAR_MATERIAL_MODULES } from '../../modules/angular-material.module';
 import { RouterLink } from "@angular/router";
-import { ThemeService, Modes, Themes } from '../../services/theme-service';
+import { ThemeService, Modes, Themes, Feature } from '../../services/theme-service';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +11,8 @@ import { ThemeService, Modes, Themes } from '../../services/theme-service';
 })
 export class Header {
   themeService = inject(ThemeService)
+  
+  featureEnum = Feature;
   modesEnum = Modes;
   themesEnum = Themes;
 }
