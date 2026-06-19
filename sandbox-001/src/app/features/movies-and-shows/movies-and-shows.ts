@@ -7,7 +7,7 @@ import { MatAnchor } from "@angular/material/button";
 import { ANGULAR_MATERIAL_MODULES } from '../../shared/modules/angular-material.module';
 import { Genre, MediaType, QueryMode, SearchMode } from './models/movie-tv.model';
 import { MultiFilter } from './models/multi.model';
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe, ViewportScroller } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import {COMMA, ENTER, P} from '@angular/cdk/keycodes';
@@ -25,6 +25,7 @@ export class MoviesAndShows {
   @ViewChild('bottomSentinel') bottomSentinel!: ElementRef;
 
   moviesAndShowsService = inject(MoviesAndShowsService)
+  private scroller = inject(ViewportScroller);
 
   // javascript calculations for the movie-shows-header height, so that I can get a buffer of the same size
   appHeaderElement = signal(document.querySelector('.app-header') as HTMLElement)
@@ -170,10 +171,13 @@ export class MoviesAndShows {
     else {
       this.moviesAndShowsService.updateSearchMode(this.searchMode.Populated)
     }
+
+    this.scrollToTop()
     this.moviesAndShowsService.loadPageFresh()
   }
 
   onDiscoverSubmit() {
+    this.scrollToTop()
     this.moviesAndShowsService.loadPageFresh()
   }
 
@@ -224,6 +228,10 @@ export class MoviesAndShows {
     })
 
     return (movieGenreExists && tvGenreExists)
+  }
+
+  scrollToTop() {
+    this.scroller.scrollToPosition([0, 0]); // Coordinates: [X, Y]
   }
   
 }
