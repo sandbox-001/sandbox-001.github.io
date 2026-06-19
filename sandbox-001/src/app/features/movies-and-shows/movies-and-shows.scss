@@ -1,52 +1,131 @@
 .movies-and-shows-feature {
     display: grid;
+    color: var(--mat-sys-on-secondary-container);
 
 }
 
 .movies-and-shows-header {
     display: grid;
+    justify-content: center;
     gap: 1em;
-    padding: 0.5em;
-    background-color: var(--mat-sys-inverse-on-surface)
-    
+    padding: 0.5em 0;
+    background-color: var(--mat-sys-inverse-on-surface);
+
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+
+    transition: translate 0.3s ease-in-out;
+    translate: 0 0;
 }
+
+.movies-and-shows-header.scroll-down {
+    translate: 0 -100%;
+}
+
+.movies-and-shows-header.relative {
+    position: relative;
+}
+
+.movies-and-shows-header-buffer {
+    display: grid;
+    justify-content: center;
+    padding: 1.1em 0;
+    
+    position: relative;
+    // z-index: 1000;
+    // background-color: red;
+    // opacity: 80%;
+}
+
+.movies-and-shows-header-buffer.relative {
+    position: absolute;
+}
+
+
+
+
+.mode {
+    display: grid;
+    gap: 1em;
+    width: 90vw;
+}
+
 
 .query-mode {
     display: grid;
     justify-content: center;
     justify-items: center;
+    justify-self: center;
+    width: inherit;
 
     mat-button-toggle-group {
+        width: inherit;
 
         mat-button-toggle {
-            width: 45vw;
+            width: 50%;
         }
     }
 }
 
 .search-discover-mode {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    width: inherit;
 
     .search-mode {
         display: grid;
-        justify-content: center;
-        justify-items: center;
+        width: inherit;
 
         mat-form-field {
-            width: 80vw;
+            width: 100%;
         }
 
         mat-button-toggle-group {
-            // width: 50%;
+            width: inherit;
+
             mat-button-toggle {
-                text-justify: center;
-                width: 20vw;
+                width: 100%;
                 overflow: hidden;
             }
         }
-
     }
     .discover-mode {
+        display: grid;
+        width: inherit;
+        gap: 1em;
 
+        .discover-media-type {
+
+            mat-button-toggle {
+                width: 50%;
+            }
+        }
+
+        .discover-filters {
+            display: grid;
+            grid-auto-flow: column;
+            justify-items: center;
+            width: inherit;
+
+            mat-form-field {
+                width: 99%;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .mode {
+        width: 60vw;
+    }
+}
+
+@media (min-width: 1400px) {
+    .mode {
+        width: 35vw;
     }
 }
 
@@ -105,7 +184,6 @@ mat-card {
 
 mat-card-content {
     padding: 0.5em;
-
     p, h3 {
         margin: 0.5em;
         display: -webkit-box;

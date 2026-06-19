@@ -26,6 +26,69 @@ export class MoviesAndShows {
 
   moviesAndShowsService = inject(MoviesAndShowsService)
 
+  // javascript calculations for the movie-shows-header height, so that I can get a buffer of the same size
+  appHeaderElement = signal(document.querySelector('.app-header') as HTMLElement)
+  appHeaderElementHeight = computed(() => `${this.appHeaderElement().offsetHeight}px`)
+
+  moviesAndShowsHeaderElement = signal(document.querySelector('.movies-and-shows-header') as HTMLElement)
+  moviesAndShowsHeaderElementHeight = computed(() => `${this.moviesAndShowsHeaderElement().offsetHeight}px`)
+
+  mediaCardsElement = signal(document.querySelector('.media-cards') as HTMLElement)
+  mediaCardsElementHeight = computed(() => `${this.mediaCardsElement().offsetHeight}px`)
+
+  lastScrollPosition = signal(0)
+  scrollDown = signal(false)
+  relative = signal(false)
+
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateHeaderElementHeight()
+  }
+
+  private updateHeaderElementHeight() {
+    const updatedMoviesAndShowsHeaderElement = (document.querySelector('.movies-and-shows-header') as HTMLElement)
+    const updatedAppHeaderElement = (document.querySelector('.app-header') as HTMLElement)
+    const updatedMediaCardsElement = (document.querySelector('.media-cards') as HTMLElement)
+
+
+    if (updatedMoviesAndShowsHeaderElement) {
+      this.moviesAndShowsHeaderElement.set(updatedMoviesAndShowsHeaderElement)
+    }
+
+    if (updatedAppHeaderElement) {
+      this.appHeaderElement.set(updatedAppHeaderElement)
+    }
+
+    if (updatedMediaCardsElement) {
+      this.mediaCardsElement.set(updatedMediaCardsElement)
+    }
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
+
+    if (currentScrollPosition > this.lastScrollPosition()) {
+      if (this.mediaCardsElement().getBoundingClientRect().top >= this.appHeaderElement().getBoundingClientRect().bottom) {
+        this.scrollDown.set(false)
+        this.relative.set(true)
+      }
+      else {
+        this.scrollDown.set(true)
+      }
+    }
+    else {
+      this.scrollDown.set(false)
+      this.relative.set(false)
+
+
+    }
+    this.lastScrollPosition.set(currentScrollPosition)
+  }
+
+
+
   // Enums
   queryMode = QueryMode;
   searchMode = SearchMode;
@@ -49,11 +112,16 @@ export class MoviesAndShows {
   ngOnInit() {
     this.multiFilterMovieAndTV = this.moviesAndShowsService.searchModel().multiFilter;
     this.moviesAndShowsService.loadPageFresh()
+
+    // Update header size for header buffer
+    this.updateHeaderElementHeight()
+
   }
 
   ngAfterViewInit() {
     this.initIntersectionObserver()
   }
+
 
   initIntersectionObserver() {
     const options = {
