@@ -455,7 +455,7 @@
     {
       "id": 7,
       "name": "닭죽",
-      "description": "Chicken juk. Very soft and has nice chunks of geometric protein. Be prepared to eat a lot of this.",
+      "description": "Chicken Juk. Has nice chunks of geometric protein. Be prepared to eat a lot of this.",
       "author": "me",
       "image": "/recipes/images/chicken_juk.png",
       "ingredients": [
@@ -519,10 +519,14 @@
         },
         {
           "step": 5,
+          "text": "Add more water, until about an inch covers the top (you can add more water as you keep checking)"
+        },
+        {
+          "step": 7,
           "text": "Put the lid back on and simmer for 1+ hour (stir occasionally)"
         },
         {
-          "step": 6,
+          "step": 8,
           "text": "Add more salt or soy sauce if needed. Melt some slices of American cheese in a bowl of juk too."
         }
       ]
