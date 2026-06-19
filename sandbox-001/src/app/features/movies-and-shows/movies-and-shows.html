@@ -11,8 +11,8 @@
             <div class="search-discover-mode">
                 @if (moviesAndShowsService.queryModeModel().queryMode === queryMode.Search) {
                     <form class="search-mode" (submit)="onSearchSubmit($event)">
-                        <mat-form-field>
-                            <input placeholder="Search" matInput subscriptSizing="dynamic" [formField]="moviesAndShowsService.searchForm.searchMedia">
+                        <mat-form-field subscriptSizing="dynamic">
+                            <input placeholder="Search" matInput [formField]="moviesAndShowsService.searchForm.searchMedia">
                             <button matSuffix matIconButton type="submit">
                                 <mat-icon>search</mat-icon>
                             </button>
@@ -37,7 +37,7 @@
                         <div class="discover-filters">
                             @if (moviesAndShowsService.queryModeModel().discoverMode === mediaType.Movie) {
                                 
-                                <mat-form-field>
+                                <mat-form-field subscriptSizing="dynamic">
                                     <mat-label>Genres</mat-label>
                                     <mat-select placeholder="Genre" (selectionChange)="triggerDiscoverSubmitSyncGenreIfPossible()" [formField]="moviesAndShowsService.discoverMovieForm.with_genre" hideSingleSelectionIndicator="true">
                                         @for (genre of moviesAndShowsService.movieGenres(); track genre.id) {
@@ -46,7 +46,7 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <mat-form-field>
+                                <mat-form-field subscriptSizing="dynamic">
                                     <mat-label>Country of origin</mat-label>
                                     <mat-select placeholder="All Countries" (selectionChange)="triggerDiscoverSubmitSyncCountries()" [formField]="moviesAndShowsService.discoverMovieForm.with_origin_country" hideSingleSelectionIndicator="true">
                                         @for (country of moviesAndShowsService.countries(); track country.iso_3166_1) {
@@ -58,7 +58,7 @@
                             }
                             @else if(moviesAndShowsService.queryModeModel().discoverMode === mediaType.TV) {
                                 
-                                <mat-form-field>
+                                <mat-form-field subscriptSizing="dynamic">
                                     <mat-label>Genres</mat-label>
                                     <mat-select placeholder="Genre" (selectionChange)="triggerDiscoverSubmitSyncGenreIfPossible()" [formField]="moviesAndShowsService.discoverTVForm.with_genre">
                                         @for (genre of moviesAndShowsService.tvGenres(); track genre.id) {
@@ -67,7 +67,7 @@
                                     </mat-select>
                                 </mat-form-field>
                                 
-                                <mat-form-field>
+                                <mat-form-field subscriptSizing="dynamic">
                                     <mat-label>Country of origin</mat-label>
                                     <mat-select (selectionChange)="triggerDiscoverSubmitSyncCountries()" [formField]="moviesAndShowsService.discoverTVForm.with_origin_country">
                                         @for (country of moviesAndShowsService.countries(); track country.iso_3166_1) {

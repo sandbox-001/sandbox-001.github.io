@@ -29,7 +29,7 @@
             }
         </button>
         <button matIconButton (click)="themeService.toggleMode()">
-            @if (themeService.mode() === modesEnum.Light) {
+            @if (themeService.currentFeatureMode().mode === modesEnum.Light) {
                 <mat-icon>light_mode</mat-icon>
             }
             @else {

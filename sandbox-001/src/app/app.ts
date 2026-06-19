@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from "./shared/components/header/header";
+import { filter } from 'rxjs';
+import { Feature, ThemeService } from './shared/services/theme-service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +11,27 @@ import { Header } from "./shared/components/header/header";
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('sandbox-001');
+
+  router = inject(Router)
+  themeService = inject(ThemeService)
+
+  constructor() {
+    this.setupFeatureModeRouteListener()
+  }
+
+  // pays attention to the route url and change the Featuremode
+  private setupFeatureModeRouteListener() {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+
+      // switch feature mode
+      if (event.urlAfterRedirects.includes('/movies-and-shows')) {
+        this.themeService.switchFeature(Feature.MoviesAndShows)
+      }
+      else {
+        this.themeService.switchFeature(Feature.DefaultAll)
+      }
+
+    });
+  }
 }

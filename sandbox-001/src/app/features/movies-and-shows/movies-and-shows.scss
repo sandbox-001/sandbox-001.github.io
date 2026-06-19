@@ -30,7 +30,7 @@
 .movies-and-shows-header-buffer {
     display: grid;
     justify-content: center;
-    padding: 1.1em 0;
+    padding: .5em 0;
     
     position: relative;
     // z-index: 1000;
@@ -78,6 +78,7 @@
     .search-mode {
         display: grid;
         width: inherit;
+        gap: 1em;
 
         mat-form-field {
             width: 100%;
