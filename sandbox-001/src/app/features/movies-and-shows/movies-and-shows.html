@@ -83,7 +83,7 @@
             </div>
         </div>
     </div>
-    <div class="movies-and-shows-header-buffer" [class.relative]="relative()" [style.height]="moviesAndShowsHeaderElementHeight()"></div>
+    <div class="movies-and-shows-header-buffer" [class.relative]="relative()" [style.height]="`${moviesAndShowsHeaderElement().getBoundingClientRect().height}px`"></div>
 
 
     <div class="media-cards">

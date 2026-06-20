@@ -29,13 +29,8 @@ export class MoviesAndShows {
 
   // javascript calculations for the movie-shows-header height, so that I can get a buffer of the same size
   appHeaderElement = signal(document.querySelector('.app-header') as HTMLElement)
-  appHeaderElementHeight = computed(() => `${this.appHeaderElement().offsetHeight}px`)
-
   moviesAndShowsHeaderElement = signal(document.querySelector('.movies-and-shows-header') as HTMLElement)
-  moviesAndShowsHeaderElementHeight = computed(() => `${this.moviesAndShowsHeaderElement().offsetHeight}px`)
-
   mediaCardsElement = signal(document.querySelector('.media-cards') as HTMLElement)
-  mediaCardsElementHeight = computed(() => `${this.mediaCardsElement().offsetHeight}px`)
 
   lastScrollPosition = signal(0)
   scrollDown = signal(false)
@@ -69,7 +64,7 @@ export class MoviesAndShows {
   @HostListener('window:scroll')
   onScroll() {
     const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
-
+    
     if (currentScrollPosition > this.lastScrollPosition()) {
       if (this.mediaCardsElement().getBoundingClientRect().top >= this.appHeaderElement().getBoundingClientRect().bottom) {
         this.scrollDown.set(false)
