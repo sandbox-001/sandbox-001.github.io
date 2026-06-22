@@ -61,9 +61,7 @@
 
     }
     @else {
-        @if (hasAttemptedGettingVidsrcMedia()) {
-            <div>Could not find media!</div>
-        }
+        <div>Could not find media!</div>
 
     }
 
@@ -71,17 +69,10 @@
     @if ((media_type() === mediaTypeEnum.Movie && selectedMovie()) || (media_type() === mediaTypeEnum.TV && selectedTV() && selectedSeason() && selectedEpisode())) {
         
         <!-- media player -->
-        @if (hasAttemptedGettingVidsrcMedia() && hasGottenVidsrcMedia()) {
-            @if (safeVidsrcUrl() !== '') {
-                <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
-            }
-            @else {
-                <div class="media-container">
-                    <img class="no-video" src="/no_video.png">
-                </div>
-            }
+        <!-- @if (hasAttemptedGettingVidsrcMedia() && hasGottenVidsrcMedia() && safeVidsrcUrl() !== '') {
+            <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
         }
-        @else if (hasAttemptedGettingVidsrcMedia() && !hasGottenVidsrcMedia()) {
+        @else if (hasAttemptedGettingVidsrcMedia() && !hasGottenVidsrcMedia() && safeVidsrcUrl() === '') {
             <div class="media-container">
                 <img class="no-video" src="/no_video.png">
             </div>
@@ -93,6 +84,25 @@
                     <mat-spinner ></mat-spinner>
                 </div>
             </div>
+        } -->
+
+        @if (isLoading() || safeVidsrcUrl() === undefined) {
+            <div class="media-container">
+                <img class="no-video blackout" src="/no_video.png">
+                <div class="overlay">
+                    <mat-spinner ></mat-spinner>
+                </div>
+            </div>
+        }
+        @else {
+            @if (safeVidsrcUrl() === '') {
+                <div class="media-container">
+                    <img class="no-video" src="/no_video.png">
+                </div>
+            }
+            @else {
+                <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+            }
         }
     }
 

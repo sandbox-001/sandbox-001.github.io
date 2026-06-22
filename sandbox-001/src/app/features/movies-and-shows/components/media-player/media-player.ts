@@ -33,8 +33,7 @@ export class MediaPlayer {
 
   mediaTypeEnum = MediaType
 
-  hasAttemptedGettingVidsrcMedia = signal<boolean>(false)
-  hasGottenVidsrcMedia = signal<boolean>(false)
+  isLoading = signal<boolean>(true)
 
   selectedMovie = signal<MovieDetailResponse | undefined>(undefined)
   selectedTV = signal<TVSeriesDetailResponse | undefined>(undefined)
@@ -42,7 +41,7 @@ export class MediaPlayer {
   selectedEpisode = signal<TVEpisodeDetailResponse | undefined>(undefined)
 
 
-  safeVidsrcUrl = signal<SafeResourceUrl>('')
+  safeVidsrcUrl = signal<SafeResourceUrl | undefined>(undefined)
 
   ngOnInit() {
     if (this.media_type() === MediaType.Movie) {
@@ -63,67 +62,68 @@ export class MediaPlayer {
           this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
         },
         error: (err) => {
-          this.hasAttemptedGettingVidsrcMedia.set(true)
+          this.isLoading.set(false)
+          this.safeVidsrcUrl.set('')
           console.error(err)
-          
         },
         complete: () => {
-          this.hasAttemptedGettingVidsrcMedia.set(true)
-          this.hasGottenVidsrcMedia.set(true)
+          this.isLoading.set(false)
         }
       })
     }
     else if (this.media_type() === MediaType.TV) {
       this.tmdbApiService.getTVSeriesDetail(this.id()).subscribe({
-      next: (response) => {
-        this.selectedTV.set(response)
-      },
-      error: (err) => {
-        console.error(err)
-      },
-      complete: () => {
-
-      }
-    })
-
-    this.tmdbApiService.getTVSeasonDetail(this.id(), this.seasonNumber()).subscribe({
-      next: (response) => {
-        this.selectedSeason.set(response)
-      },
-      error: (err) => {
-        console.error(err)
-      },
-      complete: () => {
-
-      }
-    })
-    
-    this.tmdbApiService.getTVEpisodeDetail(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
-      next: (response) => {
-        this.selectedEpisode.set(response)
-      },
-      error: (err) => {
-        console.error(err)
-      },
-      complete: () => {
-
-      }
-    })
-    }
-
-    this.vidsrcApiService.getVidsrcTV(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
         next: (response) => {
-          this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
+          this.selectedTV.set(response)
         },
         error: (err) => {
-          this.hasAttemptedGettingVidsrcMedia.set(true)
           console.error(err)
         },
         complete: () => {
-          this.hasAttemptedGettingVidsrcMedia.set(true)
-          this.hasGottenVidsrcMedia.set(true)
+
         }
       })
+
+      this.tmdbApiService.getTVSeasonDetail(this.id(), this.seasonNumber()).subscribe({
+        next: (response) => {
+          this.selectedSeason.set(response)
+        },
+        error: (err) => {
+          console.error(err)
+        },
+        complete: () => {
+
+        }
+      })
+    
+      this.tmdbApiService.getTVEpisodeDetail(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
+        next: (response) => {
+          this.selectedEpisode.set(response)
+        },
+        error: (err) => {
+          console.error(err)
+        },
+        complete: () => {
+
+        }
+      })
+
+      this.vidsrcApiService.getVidsrcTV(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
+          next: (response) => {
+            this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
+          },
+          error: (err) => {
+            this.isLoading.set(false)
+            this.safeVidsrcUrl.set('')
+            console.error(err)
+          },
+          complete: () => {
+            this.isLoading.set(false)
+          }
+        })
+    }
+
+    
   }
 
   minutesToHoursAndMinutes(minutes: number): string {
