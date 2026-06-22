@@ -29,8 +29,6 @@
     }
     @else if (media_type() === mediaTypeEnum.TV && selectedTV() && selectedSeason() && selectedEpisode()) {
         @let tv = selectedTV()!;
-        @let season = selectedSeason()!;
-        @let episode = selectedEpisode()!;
 
         <div class="media">
 
@@ -55,18 +53,24 @@
                     <div><b>Seasons: </b>{{tv.number_of_seasons}}</div>
                 </div>
             </div>
-
-
-            <div class="sub-media-title">
-                <h2>Season # {{episode.season_number}}: {{season.name}}</h2>
-                <h2>Episode # {{episode.episode_number}}: {{episode.name}}</h2>
-            </div>
+    
         </div>
         
     }
     @else {
         <div>Could not find media!</div>
 
+    }
+
+    @if (media_type() === mediaTypeEnum.TV && selectedTV() && selectedSeason() && selectedEpisode()) {
+        @let season = selectedSeason()!;
+        @let episode = selectedEpisode()!;
+
+
+        <div class="sub-media-title">
+            <h2>Season # {{episode.season_number}}: {{season.name}}</h2>
+            <h2>Episode # {{episode.episode_number}}: {{episode.name}}</h2>
+        </div>
     }
 
     <!-- if we got metadata from tmdb -->
@@ -97,7 +101,6 @@
         @let episode = selectedEpisode()!;
 
         <div>{{episode.overview}}</div>
-        <br>
         <div><b>Runtime: </b>{{minutesToHoursAndMinutes(episode.runtime)}}</div>
         
         <br>
