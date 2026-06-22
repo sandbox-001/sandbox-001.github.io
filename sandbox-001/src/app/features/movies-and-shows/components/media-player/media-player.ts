@@ -42,7 +42,7 @@ export class MediaPlayer {
   selectedEpisode = signal<TVEpisodeDetailResponse | undefined>(undefined)
 
 
-  cleanHtml = signal<SafeHtml>('')
+  safeVidsrcUrl = signal<SafeResourceUrl>('')
 
   ngOnInit() {
     if (this.media_type() === MediaType.Movie) {
@@ -60,7 +60,7 @@ export class MediaPlayer {
 
       this.vidsrcApiService.getVidsrcMovie(this.id()).subscribe({
         next: (response) => {
-          this.cleanHtml.set(this.sanitizer.bypassSecurityTrustHtml(response))
+          this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
         },
         error: (err) => {
           this.hasAttemptedGettingVidsrcMedia.set(true)
@@ -113,7 +113,7 @@ export class MediaPlayer {
 
     this.vidsrcApiService.getVidsrcTV(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
         next: (response) => {
-          this.cleanHtml.set(this.sanitizer.bypassSecurityTrustHtml(response))
+          this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
         },
         error: (err) => {
           this.hasAttemptedGettingVidsrcMedia.set(true)
@@ -124,7 +124,6 @@ export class MediaPlayer {
           this.hasGottenVidsrcMedia.set(true)
         }
       })
-    
   }
 
   minutesToHoursAndMinutes(minutes: number): string {
