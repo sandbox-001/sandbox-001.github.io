@@ -77,20 +77,18 @@
             }
             @else {
                 <div class="media-container">
-                    <img class="no-video" src="/no_video_no_text.png">
-                    <h5 class="overlay-text">VIDEO UNAVAILABLE</h5>
+                    <img class="no-video" src="/no_video.png">
                 </div>
             }
         }
         @else if (hasAttemptedGettingVidsrcMedia() && !hasGottenVidsrcMedia()) {
             <div class="media-container">
-                <img class="no-video" src="/no_video_no_text.png">
-                <h5 class="overlay-text">VIDEO UNAVAILABLE</h5>
+                <img class="no-video" src="/no_video.png">
             </div>
         }
         @else {
             <div class="media-container">
-                <img class="no-video blackout" src="/no_video_no_text.png">
+                <img class="no-video blackout" src="/no_video.png">
                 <div class="overlay">
                     <mat-spinner ></mat-spinner>
                 </div>
