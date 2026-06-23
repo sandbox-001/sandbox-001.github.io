@@ -85,7 +85,6 @@ export class MediaPlayer {
 
   constructor() {
     effect(() => {
-      console.log('New Query Params: ', window.location.search)
       this.safeVidsrcUrl.set(undefined)
       this.getTmdbAndVidsrcInfo(this.media_type(), this.id(), this.seasonNumber(), this.episodeNumber())
 
