@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { MediaType } from '../../models/movie-tv.model';
 import { TmdbApiService } from '../../services/tmdb-api-service';
 import { MovieDetailResponse } from '../../models/movie.model';
@@ -10,7 +10,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ANGULAR_MATERIAL_MODULES } from '../../../../shared/modules/angular-material.module';
 import { form, FormField } from '@angular/forms/signals';
 import { MatSelectChange } from '@angular/material/select';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface SearchTVModel {
   season: Season;
@@ -37,6 +37,7 @@ export class MediaPlayer {
   vidsrcApiService = inject(VidsrcApiService)
   sanitizer = inject(DomSanitizer)
   routerService = inject(Router)
+  activatedRouteService = inject(ActivatedRoute)
 
 
   mediaTypeEnum = MediaType
@@ -82,15 +83,18 @@ export class MediaPlayer {
 
   safeVidsrcUrl = signal<SafeResourceUrl | undefined>(undefined)
 
-  ngOnInit() {
-    
-    this.getTmdbAndVidsrcInfo()
+  constructor() {
+    effect(() => {
+      console.log('New Query Params: ', window.location.search)
+      this.safeVidsrcUrl.set(undefined)
+      this.getTmdbAndVidsrcInfo(this.media_type(), this.id(), this.seasonNumber(), this.episodeNumber())
 
+    })
   }
 
-  getTmdbAndVidsrcInfo() {
-    if (this.media_type() === MediaType.Movie) {
-      this.tmdbApiService.getMovieDetail(this.id()).subscribe({
+  getTmdbAndVidsrcInfo(mediaType: MediaType, id: number, seasonNumber: number, episodeNumber: number) {
+    if (mediaType === MediaType.Movie) {
+      this.tmdbApiService.getMovieDetail(id).subscribe({
         next: (response) => {
           this.selectedMovie.set(response)
         },
@@ -98,7 +102,7 @@ export class MediaPlayer {
           console.error(err)
         },
         complete: () => {
-          this.vidsrcApiService.getVidsrcMovie(this.id()).subscribe({
+          this.vidsrcApiService.getVidsrcMovie(id).subscribe({
             next: (response) => {
               this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
             },
@@ -116,26 +120,26 @@ export class MediaPlayer {
 
      
     }
-    else if (this.media_type() === MediaType.TV) {
-      this.tmdbApiService.getTVSeriesDetail(this.id()).subscribe({
+    else if (mediaType === MediaType.TV) {
+      this.tmdbApiService.getTVSeriesDetail(id).subscribe({
         next: (response) => {
           this.selectedTVDetail.set(response)
-          this.searchTVModel.update((form) => ({...form, season: this.getSeason(this.seasonNumber(), response.seasons)}))
+          this.searchTVModel.update((form) => ({...form, season: this.getSeason(seasonNumber, response.seasons)}))
         },
         error: (err) => {
           console.error(err)
         },
         complete: () => {
-          this.tmdbApiService.getTVSeasonDetail(this.id(), this.seasonNumber()).subscribe({
+          this.tmdbApiService.getTVSeasonDetail(id, seasonNumber).subscribe({
             next: (response) => {
               this.selectedSeasonDetail.set(response)
-              this.searchTVModel.update((form) => ({...form, episode: this.getEpisode(this.episodeNumber(), response.episodes)}))
+              this.searchTVModel.update((form) => ({...form, episode: this.getEpisode(episodeNumber, response.episodes)}))
             },
             error: (err) => {
               console.error(err)
             },
             complete: () => {
-              this.tmdbApiService.getTVEpisodeDetail(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
+              this.tmdbApiService.getTVEpisodeDetail(id, seasonNumber, episodeNumber).subscribe({
                 next: (response) => {
                   this.selectedEpisodeDetail.set(response)
                 },
@@ -143,7 +147,7 @@ export class MediaPlayer {
                   console.error(err)
                 },
                 complete: () => {
-                  this.vidsrcApiService.getVidsrcTV(this.id(), this.seasonNumber(), this.episodeNumber()).subscribe({
+                  this.vidsrcApiService.getVidsrcTV(id, seasonNumber, episodeNumber).subscribe({
                     next: (response) => {
                       this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
                     },
@@ -185,31 +189,26 @@ export class MediaPlayer {
     return episode
   }
 
-  async triggerSearchTVSeason(event: MatSelectChange) {
+   triggerSearchTVSeason(event: MatSelectChange) {
     const newSeason: Season = event.value
-    const successfulRouting = await this.routerService.navigate(['/movies-and-shows', this.media_type(), this.id()], {
+    this.routerService.navigate([], {
+      relativeTo: this.activatedRouteService,
       queryParams: this.setQueryParams(newSeason.season_number, 1),
+      queryParamsHandling: 'merge',
       // onSameUrlNavigation: 'reload',
-      replaceUrl: true
+      // replaceUrl: true
     })
-
-    if (successfulRouting) {
-      this.getTmdbAndVidsrcInfo()
-    }
-
   }
 
-  async triggerSearchTVEpisode(event: MatSelectChange) {
+  triggerSearchTVEpisode(event: MatSelectChange) {
     const newEpisode: Episode = event.value
-    const successfulRouting = await this.routerService.navigate(['/movies-and-shows', this.media_type(), this.id()], {
+    this.routerService.navigate([], {
+      relativeTo: this.activatedRouteService,
       queryParams: this.setQueryParams(this.searchTVModel().season.season_number, newEpisode.episode_number),
+      queryParamsHandling: 'merge',
       // onSameUrlNavigation: 'reload',
-      replaceUrl: true
+      // replaceUrl: true
     })
-
-    if (successfulRouting) {
-      this.getTmdbAndVidsrcInfo()
-    }
   }
 
   setQueryParams(seasonNumber: number, episodeNumber: number) {

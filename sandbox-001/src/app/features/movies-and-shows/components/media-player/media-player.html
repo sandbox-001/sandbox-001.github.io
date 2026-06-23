@@ -91,12 +91,15 @@
                 }
                 @else {
 
-                    @if (media_type() === mediaTypeEnum.Movie) {
-                        <iframe class="media-container" [style.margin]="'2em 0 0 0'" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                    @if (safeVidsrcUrl()) {
+                        @if (media_type() === mediaTypeEnum.Movie) {
+                            <iframe class="media-container" [style.margin]="'2em 0 0 0'" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                        }
+                        @else {
+                            <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                        }
                     }
-                    @else {
-                        <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
-                    }
+                    
                 }
             }
         }
