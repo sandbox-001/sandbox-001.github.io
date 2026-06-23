@@ -12,6 +12,15 @@
     }
 }
 
+hr {
+    width: 100%;
+    border: none;
+    border-top: 2px solid var(--mat-sys-inverse-primary);
+}
+
+
+
+
 .media {
     display: grid;
     gap: 1em;
@@ -53,6 +62,24 @@
     }
 
     
+}
+
+.episode-title-header {
+    display: grid;
+    justify-content: left;
+    width: min(100vh, 100%);
+
+    .media-card {
+        align-content: center;
+    }
+
+    .media-title {
+        text-align: left;
+
+        h2 {
+            margin: 0.5em;
+        }
+    }
 }
 
 

@@ -27,6 +27,8 @@
                 </div>
             </div>
 
+             <hr>
+
         }
         @else if (media_type() === mediaTypeEnum.TV && selectedTVDetail() && selectedSeasonDetail() && selectedEpisodeDetail()) {
             @let tv = selectedTVDetail()!;
@@ -57,20 +59,34 @@
 
             </div>
             
+            <hr>
         }
         @else {
             <div class>Could not find media!</div>
         }
 
+
         @if (media_type() === mediaTypeEnum.TV && selectedTVDetail() && selectedSeasonDetail() && selectedEpisodeDetail()) {
             @let season = selectedSeasonDetail()!;
             @let episode = selectedEpisodeDetail()!;
 
-            <div class="media">
-                <div class="media-title">
-                    <h2>{{season.name}}: {{episode.name}}</h2>
+            <div class="media episode-title-header">
+                <div class="media-details">
+                    <div class="media-card">
+                        <mat-card matTooltipTouchGestures="off">
+                            <img matCardImage [src]="moviesAndShowsService.getFullImageUrl(episode.still_path)">
+                        </mat-card>
+                    </div>
+
+                    <div class="media-title">
+                        <h2>{{season.name}}</h2>
+                        <h2>#{{episode.episode_number}}: {{episode.name}}</h2>
+                    </div>
                 </div>
+
             </div>
+
+            
         }
 
         <!-- if we got metadata from tmdb -->
@@ -93,7 +109,7 @@
 
                     @if (safeVidsrcUrl()) {
                         @if (media_type() === mediaTypeEnum.Movie) {
-                            <iframe class="media-container" [style.margin]="'2em 0 0 0'" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                            <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
                         }
                         @else {
                             <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
@@ -143,8 +159,7 @@
             <div><b>Runtime: </b>{{minutesToHoursAndMinutes(episode.runtime)}}</div>
             
             <br>
-            <br>
-            <br>
+            <hr>
 
             <div class="media">
 
