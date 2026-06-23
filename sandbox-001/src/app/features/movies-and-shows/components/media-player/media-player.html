@@ -135,23 +135,50 @@
             <br>
 
             <div class="media">
+                
                 <div class="media-title">
                     <h2>More Details</h2>
                 </div>
 
-                <div><b>Season # </b>{{season.season_number}}</div>
-                <div><b>Season Name: </b>{{season.name}}</div>
-                <div><b>Season Air Date: </b>{{season.air_date | date}}</div>
-                <div><b>Season Overview: </b>{{season.overview}}</div>
-                <div><b>Episodes: </b>{{season.episodes.length}}</div>
+
+                <div class="media-details">
+
+                    <div class="media-card">
+                        <mat-card matTooltipTouchGestures="off">
+                            <img matCardImage [src]="moviesAndShowsService.getFullImageUrl(season.poster_path)">
+                        </mat-card>
+                    </div>
+
+                    <div class="media-metadata">
+                        <div><b>Season # </b>{{season.season_number}}</div>
+                        <div><b>Season Name: </b>{{season.name}}</div>
+                        <div><b>Season Air Date: </b>{{season.air_date | date}}</div>
+                        <div><b>Season Overview: </b>{{season.overview}}</div>
+                        <div><b>Episodes: </b>{{season.episodes.length}}</div>
+                    </div>
+                </div>
+
 
                 <br>
 
-                <div><b>Episode # </b>{{episode.episode_number}}</div>
-                <div><b>Episode Name: </b>{{episode.name}}</div>
-                <div><b>Episode Air Date: </b>{{episode.air_date | date}}</div>
-                <div><b>Episode Overview: </b>{{episode.overview}}</div>
-                <div><b>Episode Runtime: </b>{{minutesToHoursAndMinutes(episode.runtime)}}</div>
+
+                <div class="media-details">
+
+                    <div class="media-card">
+                        <mat-card matTooltipTouchGestures="off">
+                            <img matCardImage [src]="moviesAndShowsService.getFullImageUrl(episode.still_path)">
+                        </mat-card>
+                    </div>
+
+                    <div class="media-metadata">
+                        <div><b>Episode # </b>{{episode.episode_number}}</div>
+                        <div><b>Episode Name: </b>{{episode.name}}</div>
+                        <div><b>Episode Air Date: </b>{{episode.air_date | date}}</div>
+                        <div><b>Episode Overview: </b>{{episode.overview}}</div>
+                        <div><b>Episode Runtime: </b>{{minutesToHoursAndMinutes(episode.runtime)}}</div>
+                    </div>
+                </div>
+                
             </div>
         }
     }
