@@ -376,7 +376,13 @@ export class MediaPlayer {
 
   triggerSearchTVEpisode(event: MatSelectChange) {
     const newEpisode: Episode = event.value
-    this.searchAndScrollTVEpisode(newEpisode.episode_number)
+
+    if (this.episodeGroupDetail()) {
+      this.searchAndScrollTVEpisode(this.getNotAbsoluteEpisodeNumber(newEpisode.season_number, newEpisode.episode_number))
+    }
+    else {
+      this.searchAndScrollTVEpisode(newEpisode.episode_number)
+    }
   }
 
   searchAndScrollTVEpisode(episodeNumber: number) {
@@ -419,5 +425,12 @@ export class MediaPlayer {
     const absoluteSeasonEpisodes: EpisodeGroupDetailEpisode[] = this.episodeGroupDetail()?.groups[0].episodes.filter((absoluteEpisode) => absoluteEpisode.season_number ===  seasonNumber)!
     const absoluteEpisode: EpisodeGroupDetailEpisode = absoluteSeasonEpisodes[episodeNumber - 1]
     return absoluteEpisode.episode_number
+  }
+
+  getNotAbsoluteEpisodeNumber(seasonNumber: number, absoluteEpisodeNumber: number): number {
+    const absoluteSeasonEpisodes: EpisodeGroupDetailEpisode[] = this.episodeGroupDetail()?.groups[0].episodes.filter((absoluteEpisode) => absoluteEpisode.season_number ===  seasonNumber)!
+    const notAbsoluteEpisodeNumber: number = absoluteSeasonEpisodes.findIndex((episode) => episode.episode_number === absoluteEpisodeNumber) + 1
+
+    return notAbsoluteEpisodeNumber
   }
 }
