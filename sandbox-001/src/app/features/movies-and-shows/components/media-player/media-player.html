@@ -21,7 +21,7 @@
                 <div class="media">
 
                     <div class="media-title">
-                            <h1>{{ movie.title ? movie.title : movie.original_title }}</h1>
+                        <h1>{{ movie.title ? movie.title : movie.original_title }}</h1>
                     </div>
 
                     <div class="media-details">
@@ -221,7 +221,7 @@
                                 <div><b></b>{{season.overview}}</div>
                             </div>
 
-                            <div><b>Season Air Date: </b>{{season.air_date | date: 'yyyy'}}</div>
+                            <div><b>Season Air Date: </b>{{season.air_date | date}}</div>
                             <div><b>Episodes: </b>{{season.episodes.length}}</div>
 
                         </div>
@@ -251,7 +251,7 @@
                                         </div>
 
                                         <div><b>Runtime: </b>{{minutesToHoursAndMinutes(episode.runtime)}}</div>
-                                        <div><b>Air Date: </b>{{episode.air_date | date: 'yyyy'}}</div>
+                                        <div><b>Air Date: </b>{{episode.air_date | date}}</div>
                                         
                                     </div>
                                 </div>
