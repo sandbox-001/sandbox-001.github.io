@@ -200,11 +200,41 @@ mat-card-content {
     height: 100%;
     grid-template-rows: auto 1fr;
 
+    .movies-and-shows-header {
+        position: relative;
+    }
+
+    .movies-and-shows-header.relative {
+        position: relative;
+    }
+
+    .movies-and-shows-header.scroll-down {
+        translate: 0 0;
+    }
+
+    .movies-and-shows-header-buffer {
+        display: none;
+    }
+
+    .movies-and-shows-header-buffer.relative {
+        display: none;
+    }
+
+    .media-cards {
+        display: none;
+    }
+
     .page-status {
         display: grid;
+        padding: 2em 0;
         align-content: center;
         justify-content: center;
-        overflow: hidden;
+        // overflow: hidden;
+
+        .no-results {
+            display: grid;
+            // align-content: start;
+        }
 
         .page-status-text {
             font-size: min(10cqw, 10cqh);
