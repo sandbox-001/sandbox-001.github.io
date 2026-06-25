@@ -1,16 +1,89 @@
 .media-player-feature {
     display: grid;
-    padding: 1em 0 5em 0;
+    padding: 0 0 5em 0;
     color: var(--mat-sys-on-secondary-container);
     justify-content: center;
     justify-self: center;
-    width: 80%;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+}
+
+.media-player-body {
+    display: grid;
+    justify-content: center;
+    justify-self: center;
+    align-content: center;
+    align-self: center;
     gap: 1em;
+    width: 80%;
 
     @media (orientation: portrait) {
         width: 90%;
     }
 }
+
+.media-player-header {
+    display: grid;
+    justify-content: center;
+    justify-self: center;
+    gap: 1em;
+    padding: 1em 0;
+    background-color: var(--mat-sys-inverse-primary);
+
+    position: fixed;
+    width: inherit;
+    z-index: 999;
+
+    transition: translate 0.3s ease-in-out;
+    translate: 0 0;
+}
+
+.media-player-header.scroll-down {
+    translate: 0 -100%;
+}
+
+.media-player-header.relative {
+    position: relative;
+}
+
+.media-player-header-buffer {
+    position: relative;
+    width: inherit;
+    justify-self: center
+    
+    // z-index: 1000;
+    // background-color: red;
+    // opacity: 80%;
+}
+
+.media-player-header-buffer.relative {
+    position: absolute;
+    width: inherit;
+}
+
+.search-bar {
+    width: 80vw;
+    
+    mat-form-field {
+        width: inherit;
+    }
+}
+
+@media (min-width: 768px) {
+    .search-bar {
+        width: 60vw;
+    }
+}
+
+@media (min-width: 1400px) {
+    .search-bar {
+        width: 35vw;
+    }
+}
+
+
+
+
 
 .media-player-feature:has(.page-status) {
     display: grid;
@@ -33,7 +106,7 @@
 
     .page-status-text {
         display: grid;
-        font-size: min(12cqw, 12cqh);
+        font-size: min(10cqw, 10cqh);
         font-family: cursive;
         align-self: end;
         justify-items: center;
@@ -43,8 +116,8 @@
     img {
         display: grid;
 
-        max-width: 60vw;
-        max-height: 60vh;
+        max-width: 60%;
+        max-height: 60%;
         user-select: none;
     }
 }
@@ -118,7 +191,7 @@ hr {
     .media-title {
         text-align: left;
 
-        h2, h4 {
+        h2, h3 {
             margin: 0.5em 0;
         }
     }

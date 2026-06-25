@@ -1,5 +1,5 @@
 import { Component, computed, effect, ElementRef, HostListener, inject, input, signal, ViewChild } from '@angular/core';
-import { MediaType } from '../../models/movie-tv.model';
+import { MediaType, MultiFilterEnum, SearchMode } from '../../models/movie-tv.model';
 import { TmdbApiService } from '../../services/tmdb-api-service';
 import { MovieDetailResponse } from '../../models/movie.model';
 import { Episode, EpisodeGroup, EpisodeGroupDetailEpisode, Season, TVEpisodeDetailResponse, TVEpisodeGroupDetailResponse, TVEpisodeGroupsResponse, TVSeasonDetailResponse, TVSeriesDetailResponse } from '../../models/tv.model';
@@ -85,8 +85,64 @@ export class MediaPlayer {
   })
   searchTVForm = form(this.searchTVModel)
 
-
   safeVidsrcUrl = signal<SafeResourceUrl | undefined>(undefined)
+
+
+  // javascript calculations for the movie-shows-header height, so that I can get a buffer of the same size
+  appHeaderElement = signal(document.querySelector('.app-header') as HTMLElement)
+  mediaPlayerHeaderElement = signal(document.querySelector('.media-player-header') as HTMLElement)
+  mediaPlayerBodyElement = signal(document.querySelector('.media-player-body') as HTMLElement)
+
+  lastScrollPosition = signal(0)
+  scrollDown = signal(false)
+  relative = signal(false)
+
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateHeaderElementHeight()
+  }
+
+  private updateHeaderElementHeight() {
+    const updatedAppHeaderElement = (document.querySelector('.app-header') as HTMLElement)
+    const updatedMediaPlayerHeaderElement = (document.querySelector('.media-player-header') as HTMLElement)
+    const updatedMediaPlayerElement = (document.querySelector('.media-player-body') as HTMLElement)
+
+    if (updatedAppHeaderElement) {
+      this.appHeaderElement.set(updatedAppHeaderElement)
+    }
+
+    if (updatedMediaPlayerHeaderElement) {
+      this.mediaPlayerHeaderElement.set(updatedMediaPlayerHeaderElement)
+    }
+
+    if (updatedMediaPlayerElement) {
+      this.mediaPlayerBodyElement.set(updatedMediaPlayerElement)
+    }
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
+    
+    if (currentScrollPosition > this.lastScrollPosition()) {
+      if (this.mediaPlayerBodyElement().getBoundingClientRect().top >= this.appHeaderElement().getBoundingClientRect().bottom) {
+        this.scrollDown.set(false)
+        this.relative.set(true)
+      }
+      else {
+        this.scrollDown.set(true)
+      }
+    }
+    else {
+      this.scrollDown.set(false)
+      this.relative.set(false)
+
+
+    }
+    console.log(this.relative())
+    this.lastScrollPosition.set(currentScrollPosition)
+  }
 
   constructor() {
     effect(() => {
@@ -133,6 +189,10 @@ export class MediaPlayer {
       this.getTmdbAndVidsrcInfo(this.media_type(), this.id(), this.seasonNumber(), this.episodeNumber())
 
     })
+  }
+
+  ngOnInit() {
+    this.updateHeaderElementHeight()
   }
 
   getTmdbAndVidsrcInfo(mediaType: MediaType, id: number, seasonNumber: number, episodeNumber: number) {
@@ -437,5 +497,23 @@ export class MediaPlayer {
     const notAbsoluteEpisodeNumber: number = absoluteSeasonEpisodes.findIndex((episode) => episode.episode_number === absoluteEpisodeNumber) + 1
 
     return notAbsoluteEpisodeNumber
+  }
+
+
+  onSearchSubmitForm(event: Event) {
+    event.preventDefault()
+
+    this.moviesAndShowsService.searchModel.update((currentFilter) => ({...currentFilter, multiFilter: MultiFilterEnum.MovieAndTV}))
+
+    if (this.moviesAndShowsService.searchModel().searchMedia === '') {
+      this.moviesAndShowsService.updateSearchMode(SearchMode.Unpopulated)
+    }
+    else {
+      this.moviesAndShowsService.updateSearchMode(SearchMode.Populated)
+    }
+
+    this.moviesAndShowsService.loadPageFresh()
+
+    this.routerService.navigate(['/movies-and-shows'])
   }
 }
