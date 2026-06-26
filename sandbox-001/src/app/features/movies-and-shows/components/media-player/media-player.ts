@@ -24,7 +24,7 @@ export interface SearchTVModel {
   styleUrl: './media-player.scss',
 })
 export class MediaPlayer {
-  @ViewChild('episodeHeader') episodeHeader!: ElementRef<HTMLDivElement>;
+  @ViewChild('videoHeader') videoHeader!: ElementRef<HTMLDivElement>;
 
   media_type = input.required<MediaType>();
   id = input.required<number>();
@@ -213,14 +213,14 @@ export class MediaPlayer {
               this.isLoading.set(false)
               this.safeVidsrcUrl.set('')
               if (this.scrollToMediaPlayer()) {
-                this.scrollToEpisodeHeader()
+                this.scrollToVideoHeader()
               }
               console.error(err)
             },
             complete: () => {
               this.isLoading.set(false)
               if (this.scrollToMediaPlayer()) {
-                this.scrollToEpisodeHeader()
+                this.scrollToVideoHeader()
               }
             }
           })
@@ -296,14 +296,14 @@ export class MediaPlayer {
                                 this.isLoading.set(false)
                                 this.safeVidsrcUrl.set('')
                                 if (this.scrollToMediaPlayer()) {
-                                  this.scrollToEpisodeHeader()
+                                  this.scrollToVideoHeader()
                                 }
                                 console.error(err)
                               },
                               complete: () => {
                                 this.isLoading.set(false)
                                 if (this.scrollToMediaPlayer()) {
-                                  this.scrollToEpisodeHeader()
+                                  this.scrollToVideoHeader()
                                 }
                               }
                             })
@@ -343,14 +343,14 @@ export class MediaPlayer {
                             this.isLoading.set(false)
                             this.safeVidsrcUrl.set('')
                             if (this.scrollToMediaPlayer()) {
-                              this.scrollToEpisodeHeader()
+                              this.scrollToVideoHeader()
                             }
                             console.error(err)
                           },
                           complete: () => {
                             this.isLoading.set(false)
                             if (this.scrollToMediaPlayer()) {
-                              this.scrollToEpisodeHeader()
+                              this.scrollToVideoHeader()
                             }
                           }
                         })
@@ -484,12 +484,12 @@ export class MediaPlayer {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
-  scrollToEpisodeHeader(): void {
+  scrollToVideoHeader(): void {
     const appHeaderHeight = (document.querySelector('.app-header') as HTMLElement).getBoundingClientRect().height
-    const episodeHeaderPosition = this.episodeHeader.nativeElement.getBoundingClientRect().top;
+    const videoHeaderPosition = this.videoHeader.nativeElement.getBoundingClientRect().top;
     const currentScrollPosition = window.scrollY
 
-    const targetPosition = episodeHeaderPosition + currentScrollPosition - appHeaderHeight
+    const targetPosition = videoHeaderPosition + currentScrollPosition - appHeaderHeight
 
     window.scrollTo({
       top: targetPosition,
