@@ -47,6 +47,13 @@
                 }
             }
         </button>
+
+        @if (themeService.showTmdbApiLanguageIcon()) {
+            <button matIconButton (click)="triggerTmdbApiLanguageChange()">
+                    <mat-icon svgIcon="AlphabetKoreanIcon"></mat-icon>
+            </button>
+        }
+        
     </div>
     <div class="right-buttons">
         <a class="image" routerLink="/give-us-this-day-our">

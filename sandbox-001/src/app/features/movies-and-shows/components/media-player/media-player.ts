@@ -413,6 +413,9 @@ export class MediaPlayer {
   }
 
   minutesToHoursAndMinutes(minutes: number): string {
+    if (!minutes) {
+      return 'N/A'
+    }
     if (minutes < 60) {
       return `${minutes}min`
     }

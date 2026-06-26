@@ -24,6 +24,10 @@ export enum Themes {
   SeoulCherryBlossom = 'seoul-cherry-blossom'
 }
 
+export enum TmdbApiLanguage {
+    English = 'en-Us',
+    Korean = 'ko-KR'
+}
 
 @Service()
 export class ThemeService {
@@ -43,6 +47,48 @@ export class ThemeService {
     public currentFeatureMode = signal<FeatureMode>(this.defaultAllFeatureMode)
     public theme = signal(Themes.Mountain);
 
+    public tmdbApiLanguage = signal<TmdbApiLanguage>(TmdbApiLanguage.English)
+    public showTmdbApiLanguageIcon = signal<boolean>(false)
+
+
+    constructor() {
+        const features: Feature[] = Object.values(Feature)
+
+        // initialize FeatureModes in localstorage
+        features.forEach((feature) => {
+            if (localStorage.getItem(`${feature}-mode`)) {
+                const storedFeatureMode = JSON.parse(localStorage.getItem(`${feature}-mode`)!)
+                this.setFeatureMode(storedFeatureMode)
+            }
+            else {
+                this.setFeatureMode(this.listOfDefaultFeatureModes.find((featureMode) => featureMode.feature === feature)!)
+            }
+        })
+
+        // after initializing, remember to switch the feature to the default
+        this.switchFeature(Feature.DefaultAll)
+
+        // and then we can also switch the feature by tracking the current route in the root app-root component
+        // REMEMBER TO ALSO EDIT THE ROUTE CHECKS IN APP-ROOT COMPONENT
+
+
+        // initialize themes in localstorage
+        if (localStorage.getItem('theme')) {
+            this.setTheme(localStorage.getItem('theme')! as Themes)
+        }
+        else {
+            this.setTheme(this.theme())
+        }
+
+        // initialize tmdbApiLanguage in localstorage
+        if (localStorage.getItem('tmdb-api-language')) {
+            this.setTmdbApiLanguage(localStorage.getItem('tmdb-api-language')! as TmdbApiLanguage)
+        }
+        else {
+            this.setTmdbApiLanguage(this.tmdbApiLanguage())
+        }
+
+    }
 
     private setFeatureMode(featureMode: FeatureMode) {
         const root = this.document.documentElement;
@@ -61,9 +107,16 @@ export class ThemeService {
             }
         })
 
-        this.theme.update(() => theme)
+        this.theme.set(theme)
         root.classList.add(this.theme())
         localStorage.setItem('theme', this.theme());
+    }
+
+    public setTmdbApiLanguage(language: TmdbApiLanguage) {
+        const root = this.document.documentElement
+
+        this.tmdbApiLanguage.set(language)
+        localStorage.setItem('tmdb-api-language', this.tmdbApiLanguage())
     }
 
     public switchFeature(feature: Feature) {
@@ -99,33 +152,15 @@ export class ThemeService {
         }
     }
 
-    constructor() {
-        const features: Feature[] = Object.values(Feature)
+    public toggleTmdbApiLanguage() {
+        const root = this.document.documentElement;
 
-        // initialize FeatureModes in localstorage
-        features.forEach((feature) => {
-            if (localStorage.getItem(`${feature}-mode`)) {
-                const storedFeatureMode = JSON.parse(localStorage.getItem(`${feature}-mode`)!)
-                this.setFeatureMode(storedFeatureMode)
-            }
-            else {
-                this.setFeatureMode(this.listOfDefaultFeatureModes.find((featureMode) => featureMode.feature === feature)!)
-            }
-        })
-
-        // after initializing, remember to switch the feature to the default
-        this.switchFeature(Feature.DefaultAll)
-
-        // and then we can also switch the feature by tracking the current route in the root app-root component
-        // REMEMBER TO ALSO EDIT THE ROUTE CHECKS IN APP-ROOT COMPONENT
-
-        // initialize themes in localstorage
-        if (localStorage.getItem('theme')) {
-            this.setTheme(localStorage.getItem('theme')! as Themes)
+        if (this.tmdbApiLanguage() === TmdbApiLanguage.English) {
+            this.setTmdbApiLanguage(TmdbApiLanguage.Korean)
         }
-        else {
-            this.setTheme(this.theme())
+        else if (this.tmdbApiLanguage() === TmdbApiLanguage.Korean) {
+            this.setTmdbApiLanguage(TmdbApiLanguage.English)
         }
-
     }
+    
 }

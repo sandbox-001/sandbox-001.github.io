@@ -32,11 +32,13 @@ export class App {
       if (event.urlAfterRedirects.includes('/movies-and-shows')) {
         this.themeService.switchFeature(Feature.MoviesAndShows)
         this.document.documentElement.style.setProperty('--root-background-color', 'var(--mat-sys-inverse-on-surface)')
+        this.themeService.showTmdbApiLanguageIcon.set(true)
       }
       else {
         this.themeService.switchFeature(Feature.DefaultAll)
         // this.document.documentElement.style.setProperty('--root-background-color', 'var(--mat-sys-surface)')
         this.document.documentElement.style.setProperty('--root-background-color', 'var(--mat-sys-inverse-on-surface)')
+        this.themeService.showTmdbApiLanguageIcon.set(false)
       }
 
     });
