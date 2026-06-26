@@ -28,14 +28,40 @@
                 <mat-icon>local_florist</mat-icon>
             }
         </button>
+        
         <button matIconButton (click)="themeService.toggleMode()">
-            @if (themeService.mode() === modesEnum.Light) {
-                <mat-icon>light_mode</mat-icon>
+            @if (themeService.currentFeatureMode().mode === modesEnum.Light) {
+                @if (themeService.currentFeatureMode().feature === featureEnum.MoviesAndShows) {
+                    <mat-icon>flashlight_on</mat-icon>
+                }
+                @else {
+                    <mat-icon>light_mode</mat-icon>
+                }
             }
             @else {
-                <mat-icon>dark_mode</mat-icon>
+                @if (themeService.currentFeatureMode().feature === featureEnum.MoviesAndShows) {
+                    <mat-icon>flashlight_off</mat-icon>
+                }
+                @else {
+                    <mat-icon>dark_mode</mat-icon>
+                }
             }
         </button>
+
+        @if (themeService.showTmdbApiLanguageIcon()) {
+            <button matIconButton (click)="triggerTmdbApiLanguageChange()">
+                @if (themeService.tmdbApiLanguage() === tmbdApiLanguageEnum.English) {
+                    <!-- <mat-icon>abc</mat-icon> -->
+                    <mat-icon svgIcon="language_english"></mat-icon>
+                }
+                @else if (themeService.tmdbApiLanguage() === tmbdApiLanguageEnum.Korean) {
+                    <!-- <mat-icon>language</mat-icon> -->
+                    <mat-icon svgIcon="language_korean"></mat-icon>
+                }
+            </button>
+            
+        }
+        
     </div>
     <div class="right-buttons">
         <a class="image" routerLink="/give-us-this-day-our">
