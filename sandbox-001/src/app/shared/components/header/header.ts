@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ANGULAR_MATERIAL_MODULES } from '../../modules/angular-material.module';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ThemeService, Modes, Themes, Feature } from '../../services/theme-service';
+import { ThemeService, Modes, Themes, Feature, TmdbApiLanguage } from '../../services/theme-service';
 import { MoviesAndShowsService } from '../../../features/movies-and-shows/services/movies-and-shows-service';
 import { SearchMode } from '../../../features/movies-and-shows/models/movie-tv.model';
 import { ViewportScroller } from '@angular/common';
@@ -22,6 +22,7 @@ export class Header {
   featureEnum = Feature;
   modesEnum = Modes;
   themesEnum = Themes;
+  tmbdApiLanguageEnum = TmdbApiLanguage;
 
   triggerTmdbApiLanguageChange() {
     this.themeService.toggleTmdbApiLanguage()

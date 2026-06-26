@@ -165,7 +165,7 @@ export class MoviesAndShowsService {
         let fullUrl = this.tmdbConfiguration()?.images.secure_base_url + imageSize + imagePath
 
         if (imagePath === null || imagePath === undefined) {
-            fullUrl = '/no_image.png'
+            fullUrl = '/movies-and-shows-assets/images/no_image.png'
         }
         
         return fullUrl

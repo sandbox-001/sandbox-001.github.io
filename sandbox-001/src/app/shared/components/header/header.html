@@ -50,8 +50,16 @@
 
         @if (themeService.showTmdbApiLanguageIcon()) {
             <button matIconButton (click)="triggerTmdbApiLanguageChange()">
-                    <mat-icon svgIcon="AlphabetKoreanIcon"></mat-icon>
+                @if (themeService.tmdbApiLanguage() === tmbdApiLanguageEnum.English) {
+                    <!-- <mat-icon>abc</mat-icon> -->
+                    <mat-icon svgIcon="language_english"></mat-icon>
+                }
+                @else if (themeService.tmdbApiLanguage() === tmbdApiLanguageEnum.Korean) {
+                    <!-- <mat-icon>language</mat-icon> -->
+                    <mat-icon svgIcon="language_korean"></mat-icon>
+                }
             </button>
+            
         }
         
     </div>

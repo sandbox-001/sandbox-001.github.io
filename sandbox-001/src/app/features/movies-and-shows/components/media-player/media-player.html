@@ -131,7 +131,7 @@
 
                 @if (isLoading() || safeVidsrcUrl() === undefined) {
                     <div class="media-container">
-                        <img class="no-video blackout" src="/no_video.png">
+                        <img class="no-video blackout" src="/movies-and-shows-assets/images/no_video.png">
                         <div class="overlay">
                             <mat-spinner ></mat-spinner>
                         </div>
@@ -140,7 +140,7 @@
                 @else {
                     @if (safeVidsrcUrl() === '') {
                         <div class="media-container">
-                            <img class="no-video" src="/no_video.png">
+                            <img class="no-video" src="/movies-and-shows-assets/images/no_video.png">
                         </div>
                     }
                     @else {
