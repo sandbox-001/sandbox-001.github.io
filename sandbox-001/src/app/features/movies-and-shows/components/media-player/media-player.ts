@@ -336,7 +336,6 @@ export class MediaPlayer {
                       complete: () => {
                         this.vidsrcApiService.getVidsrcTV(id, seasonNumber, episodeNumber).subscribe({
                           next: (response) => {
-                            console.log(response)
                             this.safeVidsrcUrl.set(response)
                           },
                           error: (err) => {
