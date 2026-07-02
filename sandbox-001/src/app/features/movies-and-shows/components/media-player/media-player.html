@@ -147,10 +147,10 @@
 
                         @if (safeVidsrcUrl()) {
                             @if (media_type() === mediaTypeEnum.Movie) {
-                                <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                                <iframe class="media-container" referrerpolicy="no-referrer" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
                             }
                             @else {
-                                <iframe class="media-container" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+                                <iframe class="media-container" referrerpolicy="no-referrer" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
                             }
                         }
                         

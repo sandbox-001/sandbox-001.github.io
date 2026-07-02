@@ -38,7 +38,6 @@ export class MediaPlayer {
   tmdbApiService = inject(TmdbApiService)
   moviesAndShowsService = inject(MoviesAndShowsService)
   vidsrcApiService = inject(VidsrcApiService)
-  sanitizer = inject(DomSanitizer)
   routerService = inject(Router)
   activatedRouteService = inject(ActivatedRoute)
 
@@ -207,7 +206,7 @@ export class MediaPlayer {
         complete: () => {
           this.vidsrcApiService.getVidsrcMovie(id).subscribe({
             next: (response) => {
-              this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
+              this.safeVidsrcUrl.set(response)
             },
             error: (err) => {
               this.isLoading.set(false)
@@ -290,7 +289,7 @@ export class MediaPlayer {
                           complete: () => {
                             this.vidsrcApiService.getVidsrcTV(id, seasonNumber, episodeNumber).subscribe({
                               next: (response) => {
-                                this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
+                                this.safeVidsrcUrl.set(response)
                               },
                               error: (err) => {
                                 this.isLoading.set(false)
@@ -337,7 +336,8 @@ export class MediaPlayer {
                       complete: () => {
                         this.vidsrcApiService.getVidsrcTV(id, seasonNumber, episodeNumber).subscribe({
                           next: (response) => {
-                            this.safeVidsrcUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(response))
+                            console.log(response)
+                            this.safeVidsrcUrl.set(response)
                           },
                           error: (err) => {
                             this.isLoading.set(false)
