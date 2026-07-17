@@ -1,24 +1,29 @@
 import { computed, Service, signal } from '@angular/core';
-import { CalculatorType, InvestmentCalculationResults, InvestmentCalculator, TimeUnit } from '../models/calculator.model';
-import { form } from '@angular/forms/signals';
+import { CalculatorType, InvestmentCalculationResults, InvestmentCalculatorModel, TimeUnit } from '../models/calculator.model';
+import { form, min, required } from '@angular/forms/signals';
 
 @Service()
 export class FinanceCalculatorsService {
 
     calculatorType = signal<CalculatorType>(CalculatorType.Investment)
 
-    investmentCalculatorModel = signal<InvestmentCalculator>({
+    investmentCalculatorModel = signal<InvestmentCalculatorModel>({
         startingAmount: 1000,
         yearlyReturnRate: 8,
         contribution: 100,
         contributionFrequency: TimeUnit.Week,
         yearsInvested: 10
     })
-    investmentCalculatorForm = form(this.investmentCalculatorModel)
+    investmentCalculatorForm = form(this.investmentCalculatorModel, (schemaPath) => {
+        min(schemaPath.startingAmount, 0, {message: 'Starting Amount cannot be negative'})
+        min(schemaPath.yearlyReturnRate, 0, {message: 'Starting Amount cannot be negative'})
+        min(schemaPath.contribution, 0, {message: 'Starting Amount cannot be negative'})
+        min(schemaPath.yearsInvested, 1, {message: 'Starting Amount cannot be negative'})
+    })
 
     investmentCalculationResult = computed<InvestmentCalculationResults>(() => this.investmentCalculation(this.investmentCalculatorModel()))
 
-    investmentCalculation(investmentCalculator: InvestmentCalculator): InvestmentCalculationResults {
+    investmentCalculation(investmentCalculator: InvestmentCalculatorModel): InvestmentCalculationResults {
         const contributionFrequency = this.getNumbericTimeUnit(investmentCalculator.contributionFrequency);
         const totalContributions = contributionFrequency * investmentCalculator.yearsInvested
         const returnRate = (investmentCalculator.yearlyReturnRate / 100) / contributionFrequency
@@ -26,7 +31,7 @@ export class FinanceCalculatorsService {
             startingBalance: investmentCalculator.startingAmount,
             endBalance: 0,
             totalContributions: investmentCalculator.contribution * totalContributions,
-            totalInterest: 0,
+            totalInterestEarned: 0,
             stats: []
         }
 
@@ -38,7 +43,7 @@ export class FinanceCalculatorsService {
 
             currentBalance = startingBalance + interestEarned + investmentCalculator.contribution
 
-            results.totalInterest += interestEarned
+            results.totalInterestEarned += interestEarned
             results.endBalance = currentBalance
             results.stats.push({
                 interval: investmentCalculator.contributionFrequency,
@@ -50,7 +55,6 @@ export class FinanceCalculatorsService {
             })
         }
 
-        console.log(results)
         return results
     }
 

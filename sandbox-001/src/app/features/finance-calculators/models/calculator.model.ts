@@ -10,7 +10,7 @@ export enum TimeUnit {
     Year = 'Year'
 }
 
-export interface InvestmentCalculator {
+export interface InvestmentCalculatorModel {
     startingAmount: number;
     yearlyReturnRate: number;
     contribution: number;
@@ -22,7 +22,7 @@ export interface InvestmentCalculationResults {
     startingBalance: number;
     endBalance: number;
     totalContributions: number;
-    totalInterest: number;
+    totalInterestEarned: number;
     stats: InvestmentCalculationStats[]
 }
 

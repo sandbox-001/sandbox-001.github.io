@@ -1,10 +1,53 @@
-<p>finance-calculators works!</p>
-<div>{{financeCalculatorsService.investmentCalculationResult().startingBalance}}</div>
-<div>{{financeCalculatorsService.investmentCalculationResult().endBalance}}</div>
-<div>{{financeCalculatorsService.investmentCalculationResult().totalContributions}}</div>
-<div>{{financeCalculatorsService.investmentCalculationResult().totalInterest}}</div>
+<div class="finance-calculators-feature">
+    @if (financeCalculatorsService.calculatorType() === calculatorType.Investment) {
+        <form>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Starting Amount</mat-label>
+                <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.startingAmount" (blur)="autoFillIfBlank()">
+            </mat-form-field>
 
-@for (interval of financeCalculatorsService.investmentCalculationResult().stats; track interval.intervalNumber) {
-    <div>{{interval.intervalNumber}} | {{interval.startingBalance | currency}} | {{interval.contribution | currency}} | {{interval.interestEarned | currency}} | {{interval.endingBalance | currency}}</div>
-}
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Annual Return Rate</mat-label>
+                <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearlyReturnRate" (blur)="autoFillIfBlank()">
+            </mat-form-field>
 
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Contribution</mat-label>
+                <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.contribution" (blur)="autoFillIfBlank()">
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Contribution Frequency</mat-label>
+                <mat-select [formField]="financeCalculatorsService.investmentCalculatorForm.contributionFrequency" hideSingleSelectionIndicator="true">
+                    @for (timeUnit of timeUnits; track timeUnit) {
+                        <mat-option [value]="timeUnit">{{timeUnit}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Years Invested</mat-label>
+                <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearsInvested" (blur)="autoFillIfBlank()">
+            </mat-form-field>
+
+        </form>
+
+        <br>
+
+        <div>Starting Balance: {{financeCalculatorsService.investmentCalculationResult().startingBalance | currency}}</div>
+        <div>End Balance: {{financeCalculatorsService.investmentCalculationResult().endBalance | currency}}</div>
+        <div>Total Contributions: {{financeCalculatorsService.investmentCalculationResult().totalContributions | currency}}</div>
+        <div>Total Interest Earned: {{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
+
+        <br>
+
+        @for (interval of financeCalculatorsService.investmentCalculationResult().stats; track interval.intervalNumber) {
+            <div>{{interval.intervalNumber}} | {{interval.startingBalance | currency}} | {{interval.contribution | currency}} | {{interval.interestEarned | currency}} | {{interval.endingBalance | currency}}</div>
+        }
+    }
+    @else if (financeCalculatorsService.calculatorType() === calculatorType.Mortgage) {
+        <div>i'm still working on this mortgage calculator</div>
+    }
+    
+
+</div>
