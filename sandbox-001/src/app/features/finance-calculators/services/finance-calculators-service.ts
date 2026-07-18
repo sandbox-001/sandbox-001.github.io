@@ -10,7 +10,7 @@ export class FinanceCalculatorsService {
 
     investmentCalculatorModel = signal<InvestmentCalculatorModel>({
         startingAmount: 1000,
-        yearlyReturnRate: 8,
+        yearlyReturnRate: 7,
         contribution: 100,
         contributionFrequency: TimeUnit.Week,
         yearsInvested: 10
