@@ -48,10 +48,12 @@
                 <div>
                     <h2>Results</h2>
                     <div class="results">
+                        <div>Start Balance: </div>
+                        <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().startingBalance | currency}}</div>
                         <div>Total Contributions: </div>
                         <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().totalContributions | currency}}</div>
                         <div>Total Interest Earned: </div>
-                        <div class="result-numbers">+ {{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
+                        <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
                         <div class="top-border">End Balance: </div>
                         <div class="result-numbers top-border">{{financeCalculatorsService.investmentCalculationResult().endBalance | currency}}</div>
                     </div>
