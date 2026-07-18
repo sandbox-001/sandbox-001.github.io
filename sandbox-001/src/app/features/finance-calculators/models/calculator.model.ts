@@ -32,6 +32,7 @@ export interface InvestmentCalculationStats {
     contribution: number;
     interestEarned: number;
     endingBalance: number;
+    contributionBalance: number;
 }
 
 export interface MortgageCalculator {

@@ -13,19 +13,19 @@
                 <mat-form-field subscriptSizing="dynamic">
                     <mat-label>Starting Amount</mat-label>
                     <div matTextPrefix>$</div>
-                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.startingAmount" (blur)="autoFillIfBlank()">
+                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.startingAmount" (blur)="autoFillIfBlankInvestment()">
                 </mat-form-field>
 
                 <mat-form-field subscriptSizing="dynamic">
                     <mat-label>Annual Return Rate</mat-label>
-                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearlyReturnRate" (blur)="autoFillIfBlank()">
+                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearlyReturnRate" (blur)="autoFillIfBlankInvestment()">
                     <div matTextSuffix>%</div>
                 </mat-form-field>
 
                 <mat-form-field subscriptSizing="dynamic">
                     <mat-label>Contribution</mat-label>
                     <div matTextPrefix>$</div>
-                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.contribution" (blur)="autoFillIfBlank()">
+                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.contribution" (blur)="autoFillIfBlankInvestment()">
                 </mat-form-field>
 
                 <mat-form-field subscriptSizing="dynamic">
@@ -39,33 +39,35 @@
 
                 <mat-form-field subscriptSizing="dynamic">
                     <mat-label>Years Invested</mat-label>
-                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearsInvested" (blur)="autoFillIfBlank()">
+                    <input type="number" matInput [formField]="financeCalculatorsService.investmentCalculatorForm.yearsInvested" (blur)="autoFillIfBlankInvestment()">
                 </mat-form-field>
 
             </form>
 
             <div class="details">
-                <div>
+                <div class="results">
                     <h2>Results</h2>
-                    <div class="results">
+                    <div class="result-stats">
                         <div>Start Balance: </div>
                         <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().startingBalance | currency}}</div>
                         <div>Total Contributions: </div>
                         <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().totalContributions | currency}}</div>
                         <div>Total Interest Earned: </div>
                         <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
-                        <div class="top-border">End Balance: </div>
+                        <div class="top-border">Total Returns: </div>
                         <div class="result-numbers top-border">{{financeCalculatorsService.investmentCalculationResult().endBalance | currency}}</div>
                     </div>
                 </div>
-                <div>
-                    this is where the graph goes
+                <div class="chart">
+                    <div class="chart-wrapper">
+                        <canvas #investmentChart></canvas>
+                    </div>
                 </div>
             </div>
 
             <div>
                 <div class="table-container">
-                    <table mat-table [dataSource]="dataSource()">
+                    <table mat-table [dataSource]="investmentDataSource()">
                         <!-- intervalNumber Column -->
                         <ng-container [matColumnDef]="financeCalculatorsService.investmentCalculatorModel().contributionFrequency">
                         <th mat-header-cell *matHeaderCellDef class="interval"> {{financeCalculatorsService.investmentCalculatorModel().contributionFrequency}} </th>
@@ -101,8 +103,9 @@
                     </table>
                 </div>
                 <mat-paginator
+                    #investmentPaginator
                     [pageSize]="10"
-                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    [pageSizeOptions]="[5, 10, 25, 50, 100]"
                     showFirstLastButtons>
                 </mat-paginator>
             </div>

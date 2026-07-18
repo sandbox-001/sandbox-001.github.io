@@ -37,12 +37,14 @@ export class FinanceCalculatorsService {
         }
 
         let currentBalance = investmentCalculator.startingAmount
+        let contributionBalance = investmentCalculator.startingAmount
 
         for (let i: number = 1; i <= totalContributions; i++) {
             const startingBalance = currentBalance
             const interestEarned = startingBalance * returnRate
 
             currentBalance = startingBalance + interestEarned + investmentCalculator.contribution
+            contributionBalance += investmentCalculator.contribution
 
             results.totalInterestEarned += interestEarned
             results.endBalance = currentBalance
@@ -52,7 +54,8 @@ export class FinanceCalculatorsService {
                 startingBalance: startingBalance,
                 contribution: investmentCalculator.contribution,
                 interestEarned: interestEarned,
-                endingBalance: currentBalance
+                endingBalance: currentBalance,
+                contributionBalance: contributionBalance
             })
         }
 
