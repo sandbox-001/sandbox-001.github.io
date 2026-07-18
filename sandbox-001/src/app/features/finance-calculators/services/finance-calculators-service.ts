@@ -13,7 +13,7 @@ export class FinanceCalculatorsService {
         yearlyReturnRate: 7,
         contribution: 100,
         contributionFrequency: TimeUnit.Week,
-        yearsInvested: 10
+        yearsInvested: 20
     })
     investmentCalculatorForm = form(this.investmentCalculatorModel, (schemaPath) => {
         min(schemaPath.startingAmount, 0, {message: 'Starting Amount cannot be negative'})
