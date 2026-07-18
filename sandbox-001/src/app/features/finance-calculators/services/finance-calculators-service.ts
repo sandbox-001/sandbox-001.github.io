@@ -61,8 +61,6 @@ export class FinanceCalculatorsService {
 
     getNumbericTimeUnit(timeUnit: TimeUnit): number {
         switch (timeUnit) {
-            case TimeUnit.Day:
-                return 365
             case TimeUnit.Week:
                 return 52
             case TimeUnit.Month:

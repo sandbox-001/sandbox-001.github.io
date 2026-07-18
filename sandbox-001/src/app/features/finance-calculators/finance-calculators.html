@@ -44,14 +44,22 @@
 
             </form>
 
-            <br>
-
-            <div>Starting Balance: {{financeCalculatorsService.investmentCalculationResult().startingBalance | currency}}</div>
-            <div>End Balance: {{financeCalculatorsService.investmentCalculationResult().endBalance | currency}}</div>
-            <div>Total Contributions: {{financeCalculatorsService.investmentCalculationResult().totalContributions | currency}}</div>
-            <div>Total Interest Earned: {{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
-
-            <br>
+            <div class="details">
+                <div>
+                    <h2>Results</h2>
+                    <div class="results">
+                        <div>Total Contributions: </div>
+                        <div class="result-numbers">{{financeCalculatorsService.investmentCalculationResult().totalContributions | currency}}</div>
+                        <div>Total Interest Earned: </div>
+                        <div class="result-numbers">+ {{financeCalculatorsService.investmentCalculationResult().totalInterestEarned | currency}}</div>
+                        <div class="top-border">End Balance: </div>
+                        <div class="result-numbers top-border">{{financeCalculatorsService.investmentCalculationResult().endBalance | currency}}</div>
+                    </div>
+                </div>
+                <div>
+                    this is where the graph goes
+                </div>
+            </div>
 
             <div class="table-container">
                 <table mat-table [dataSource]="financeCalculatorsService.investmentCalculationResult().stats">

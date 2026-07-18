@@ -19,11 +19,57 @@
     }
 }
 
+.investment-calculator {
+    display: grid;
+    gap: 2em;
+}
+
 .investment-calculator-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5em;
+    justify-self: center;
+
+    @media (min-width: 768px) {
+        width: 70vw;
+    }
+
+    @media (min-width: 1400px) {
+        width: 50vw;
+    }
+
 }
+
+.details {
+    display: grid;
+    gap: 2em;
+
+    .results {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        white-space: nowrap;
+
+        .result-numbers {
+            text-align: right;
+        }
+
+        .top-border {
+            border-top: 1px solid;
+        }
+    }
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+
+        h2, .results {
+            width: 80%;
+            justify-self: center;
+        }
+    }
+
+
+}
+
+
 
 .table-container {
     overflow: auto;

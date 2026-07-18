@@ -4,7 +4,6 @@ export enum CalculatorType {
 }
 
 export enum TimeUnit {
-    Day = 'Day',
     Week = 'Week',
     Month = 'Month',
     Year = 'Year'
