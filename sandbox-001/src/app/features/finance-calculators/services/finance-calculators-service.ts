@@ -9,7 +9,7 @@ export class FinanceCalculatorsService {
     calculatorTypeForm = form(this.calculatorTypeModel)
 
     investmentCalculatorModel = signal<InvestmentCalculatorModel>({
-        startingAmount: 1000,
+        startingAmount: 0,
         yearlyReturnRate: 7,
         contribution: 100,
         contributionFrequency: TimeUnit.Week,
