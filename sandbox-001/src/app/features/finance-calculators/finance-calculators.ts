@@ -62,7 +62,7 @@ export class FinanceCalculators {
         labels: [], // Populated dynamically
         datasets: [
           {
-            label: 'Total Returns',
+            label: 'Returns',
             data: [],
             borderColor: '#10b981', // Green line
             backgroundColor: '#10b981',
