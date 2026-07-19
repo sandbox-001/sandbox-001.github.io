@@ -1,0 +1,153 @@
+.finance-calculators-feature {
+    display: grid;
+    color: var(--mat-sys-on-secondary-container);
+    padding: 0.5em 0.5em 2em 0.5em;
+    gap: 1em;
+    justify-self: center;
+    width: 100%;
+    box-sizing: border-box;
+
+    @media (min-width: 768px) {
+        width: 95%;
+    }
+
+    @media (min-width: 1400px) {
+        width: 90%;
+    }
+}
+
+.calculators {
+    display: grid;
+    h1 {
+        justify-self: center;
+        text-align: center;
+    }
+    mat-button-toggle-group {
+        width: 100%;
+        mat-button-toggle {
+            width: 50%;
+        }
+    }
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.investment-calculator {
+    display: grid;
+    gap: 2em;
+}
+
+.investment-calculator-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5em;
+    justify-self: center;
+
+    @media (min-width: 768px) {
+        width: 70%;
+    }
+
+    @media (min-width: 1400px) {
+        width: 60%;
+    }
+
+}
+
+.details {
+    display: grid;
+    gap: 2em;
+    padding: 1em;
+
+    .result-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        white-space: nowrap;
+
+        .result-numbers {
+            text-align: right;
+        }
+
+        .top-border {
+            border-top: 1px solid;
+        }
+    }
+
+    .pie-chart-wrapper {
+        display: grid;
+        justify-self: center;
+        justify-content: center;
+        width: 70%;
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+
+        .results {
+            width: 80%;
+            justify-self: center;
+        }
+
+        .pie-chart-wrapper {
+            width: 50%;
+        }
+    }
+
+
+}
+
+.line-chart-wrapper {
+    position: relative;
+    display: grid;
+    padding: 1em;
+    justify-self: center;
+    justify-content: center;
+    width: 80%;
+}
+
+
+
+.table-container {
+    overflow: auto;
+    max-height: 80vh;
+    contain: inline-size;
+    justify-self: center;
+    width: 100%;
+}
+
+mat-paginator {
+    padding: 0.5em;
+}
+
+.mat-mdc-header-row {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: var(--mat-sys-inverse-primary);
+}
+
+.interval {
+    text-align: center;
+}
+
+.mat-column-startingBalance,
+.mat-column-contribution,
+.mat-column-interestEarned,
+.mat-column-endingBalance {
+    text-align: right;
+}
+
+.mat-mdc-header-cell, 
+.mat-mdc-cell {
+  padding: 0 1em;
+}
+
+
+.mortgage-calculator {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
