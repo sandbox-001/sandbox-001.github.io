@@ -22,7 +22,30 @@ export class FinanceCalculatorsService {
         min(schemaPath.yearsInvested, 1, {message: 'Starting Amount cannot be negative'})
     })
 
-    investmentCalculationResult = computed<InvestmentCalculationResults>(() => this.investmentCalculation(this.investmentCalculatorModel()))
+    investmentCalculationResult = computed<InvestmentCalculationResults>(() => {
+        this.storeInvestmentCalculatorModel(this.investmentCalculatorModel())
+        return this.investmentCalculation(this.investmentCalculatorModel())
+    })
+
+    constructor() {
+
+        // initialize investmentCalculatorModel in localstorage
+        if (localStorage.getItem('investment-calculator-model')) {
+            const storedInvestmentCalculatorModel = JSON.parse(localStorage.getItem('investment-calculator-model')!)
+            this.investmentCalculatorModel.set(storedInvestmentCalculatorModel)
+        }
+        else {
+            console.log('asdf')
+            this.storeInvestmentCalculatorModel(this.investmentCalculatorModel())
+        }
+
+    }
+
+    private storeInvestmentCalculatorModel(investmentCalculatorModel: InvestmentCalculatorModel) {
+
+        localStorage.setItem('investment-calculator-model', JSON.stringify(investmentCalculatorModel));
+    }
+
 
     investmentCalculation(investmentCalculator: InvestmentCalculatorModel): InvestmentCalculationResults {
         const contributionFrequency = this.getNumbericTimeUnit(investmentCalculator.contributionFrequency);
