@@ -49,6 +49,6 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        component: GiveUsThisDayOur
+        component: Homepage
     }
 ];
