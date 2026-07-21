@@ -21,29 +21,4 @@ export class PayrollTaxApiService {
         return this.http.get<PayrollTaxApiResponse>(this.ratesLookupUrl + `workState=${payrollTaxApiRequest.workState}&payDate=${formatDate(payrollTaxApiRequest.payDate, 'yyyy-MM-dd', 'en-US')}&residenceState=${payrollTaxApiRequest.residenceState}&grossWages=${payrollTaxApiRequest.grossWages}&payPeriod=${payrollTaxApiRequest.payPeriod}&filingStatus=${payrollTaxApiRequest.filingStatus}&allowances=${payrollTaxApiRequest.allowances}`, {headers: this.header})
     }
 
-
-    constructor() {
-        const request: PayrollTaxApiRequest = {
-            workState: State.New_York,
-            payDate: new Date(new Date().getFullYear(), 1, 1),
-            residenceState: State.New_Jersey,
-            grossWages: 130000,
-            payPeriod: PayPeriod.Weekly,
-            filingStatus: FilingStatus.Single,
-            allowances: 0
-        }
-
-        this.getRatesLookup(request).subscribe({
-            next: (response) => {
-                console.log(response.taxes)
-            },
-            error: (err) => {
-                console.error(err)
-            },
-            complete: () => {
-                console.log('complete')
-            }
-        })
-
-    }
 }

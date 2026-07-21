@@ -1,9 +1,12 @@
-import { computed, Service, signal } from '@angular/core';
-import { CalculatorType, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, TimeUnit } from '../models/calculator.model';
+import { computed, inject, Service, signal } from '@angular/core';
+import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, State, TimeUnit } from '../models/calculator.model';
 import { form, min, pattern, required } from '@angular/forms/signals';
+import { PayrollTaxApiService } from './payroll-tax-api-service';
 
 @Service()
 export class FinanceCalculatorsService {
+
+    payrollTaxApiService = inject(PayrollTaxApiService)
 
     calculatorTypeModel = signal<CalculatorType>(CalculatorType.Investment)
     calculatorTypeForm = form(this.calculatorTypeModel)
@@ -43,6 +46,22 @@ export class FinanceCalculatorsService {
         return this.mortgageCalculation(this.mortgageCalculatorModel())
     })
 
+    taxCalculatorModel = signal<PayrollTaxApiRequest>({
+        workState: State.New_York,
+        payDate: new Date(new Date().getFullYear(), 0, 1),
+        residenceState: State.New_York,
+        grossWages: 100000,
+        payPeriod: PayPeriod.Annual,
+        filingStatus: FilingStatus.Single,
+        allowances: 0
+    })
+    taxCalculatorForm = form(this.taxCalculatorModel, (schemaPath) => {
+        min(schemaPath.grossWages, 0, {message: 'Starting Amount cannot be negative'})
+    })
+
+    taxRateResult = signal<PayrollTaxApiResponse | undefined>(undefined)
+
+
     constructor() {
 
         // initialize calculatorType in localstorage
@@ -72,6 +91,15 @@ export class FinanceCalculatorsService {
             this.storeMortgageCalculatorModel(this.mortgageCalculatorModel())
         }
 
+        // initialize taxCalculatorModel in localstorage
+        if (localStorage.getItem('tax-calculator-model')) {
+            const storedTaxCalculatorModel = JSON.parse(localStorage.getItem('tax-calculator-model')!)
+            this.taxCalculatorModel.set(storedTaxCalculatorModel)
+        }
+        else {
+            this.storeTaxCalculatorModel(this.taxCalculatorModel())
+        }
+
     }
 
     storeCalculatorType(calculatorType: CalculatorType) {
@@ -87,6 +115,10 @@ export class FinanceCalculatorsService {
     private storeMortgageCalculatorModel(mortgageCalculatorModel: MortgageCalculatorModel) {
 
         localStorage.setItem('mortgage-calculator-model', JSON.stringify(mortgageCalculatorModel));
+    }
+
+    private storeTaxCalculatorModel(taxCalculatorModel: PayrollTaxApiRequest) {
+        localStorage.setItem('tax-calculator-model', JSON.stringify(taxCalculatorModel));
     }
 
 
@@ -214,5 +246,21 @@ export class FinanceCalculatorsService {
         }
 
         return results;
+    }
+
+    getTaxRates() {
+        this.storeTaxCalculatorModel(this.taxCalculatorModel())
+        
+        this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).subscribe({
+            next: (response) => {
+                this.taxRateResult.set(response)
+            },
+            error: (err) => {
+                console.error(err)
+            },
+            complete: () => {
+                
+            }
+        })
     }
 }
