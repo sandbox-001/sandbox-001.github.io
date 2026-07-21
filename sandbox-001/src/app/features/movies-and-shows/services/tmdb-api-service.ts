@@ -60,7 +60,7 @@ export class TmdbApiService {
         return this.http.get<GenresResponse>(this.movieGenresUrl, {headers: this.header, params: movieGenresParams})
     }
 
-    getTVGenres() {
+    getTVGenres(): Observable<GenresResponse> {
         const tvGenresParams = this.params().delete('include_adult')
         return this.http.get<GenresResponse>(this.tvGenresUrl, {headers: this.header, params: tvGenresParams})
     }
