@@ -71,6 +71,8 @@ export interface PayrollTaxApiRequest {
 export interface PayrollTaxApiResponse {
     grossWages: number;
     taxes: Tax[];
+    workState: State;
+    residenceState: State;
 }
 
 export interface Tax {

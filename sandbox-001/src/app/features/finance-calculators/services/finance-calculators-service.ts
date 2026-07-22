@@ -256,13 +256,14 @@ export class FinanceCalculatorsService {
             map((response: PayrollTaxApiResponse) => {
                 const editedResponse: PayrollTaxApiResponse = {
                     grossWages: this.taxCalculatorModel().grossWages,
-                    taxes: response.taxes
+                    taxes: response.taxes,
+                    workState: response.workState,
+                    residenceState: response.residenceState
                 }
                 return editedResponse
             })
         ).subscribe({
             next: (response) => {
-                console.log(response)
                 this.taxRateResult.set(response)
             },
             error: (err) => {
