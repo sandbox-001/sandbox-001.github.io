@@ -1,7 +1,8 @@
 import { computed, inject, Service, signal } from '@angular/core';
-import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, State, TimeUnit } from '../models/calculator.model';
+import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, State, Tax, TimeUnit } from '../models/calculator.model';
 import { form, min, pattern, required } from '@angular/forms/signals';
 import { PayrollTaxApiService } from './payroll-tax-api-service';
+import { map } from 'rxjs';
 
 @Service()
 export class FinanceCalculatorsService {
@@ -251,8 +252,17 @@ export class FinanceCalculatorsService {
     getTaxRates() {
         this.storeTaxCalculatorModel(this.taxCalculatorModel())
 
-        this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).subscribe({
+        this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).pipe(
+            map((response: PayrollTaxApiResponse) => {
+                const editedResponse: PayrollTaxApiResponse = {
+                    grossWages: this.taxCalculatorModel().grossWages,
+                    taxes: response.taxes
+                }
+                return editedResponse
+            })
+        ).subscribe({
             next: (response) => {
+                console.log(response)
                 this.taxRateResult.set(response)
             },
             error: (err) => {
@@ -262,5 +272,23 @@ export class FinanceCalculatorsService {
                 
             }
         })
+    }
+
+    getEstimatedMarginalTaxes(grossWages: number, tax: Tax): number {
+        let payableTax: number = 0
+
+        tax.brackets.forEach((bracket) => {
+            if (grossWages > bracket.from) {
+                if (grossWages > bracket.to) {
+                    payableTax += bracket.to * bracket.rate
+                }
+                else {
+                    payableTax += (grossWages - (bracket.from)) * bracket.rate
+                }
+            }
+        })
+
+        return payableTax
+
     }
 }

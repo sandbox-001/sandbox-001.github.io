@@ -69,11 +69,12 @@ export interface PayrollTaxApiRequest {
 }
 
 export interface PayrollTaxApiResponse {
+    grossWages: number;
     taxes: Tax[];
 }
 
 export interface Tax {
-    brackets: Bracket;
+    brackets: Bracket[];
     category: string;
     effective_date: string;
     jurisdiction: string;

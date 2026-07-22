@@ -2,7 +2,7 @@ import { Component, computed, ElementRef, inject, ViewChild } from '@angular/cor
 import { FinanceCalculatorsService } from './services/finance-calculators-service';
 import { ANGULAR_MATERIAL_MODULES } from '../../shared/modules/angular-material.module';
 import { FormField, FormRoot } from '@angular/forms/signals';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculationStats, MortgageCalculationResults, MortgageCalculationStats, State, TimeUnit } from './models/calculator.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,7 +10,7 @@ import { Chart } from 'chart.js/auto'
 
 @Component({
   selector: 'app-finance-calculators',
-  imports: [ANGULAR_MATERIAL_MODULES, FormField, CurrencyPipe, FormRoot],
+  imports: [ANGULAR_MATERIAL_MODULES, FormField, CurrencyPipe, PercentPipe, FormRoot],
   templateUrl: './finance-calculators.html',
   styleUrl: './finance-calculators.scss',
 })
