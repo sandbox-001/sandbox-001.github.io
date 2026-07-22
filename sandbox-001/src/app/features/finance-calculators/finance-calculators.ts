@@ -1,16 +1,16 @@
 import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { FinanceCalculatorsService } from './services/finance-calculators-service';
 import { ANGULAR_MATERIAL_MODULES } from '../../shared/modules/angular-material.module';
-import { FormField } from '@angular/forms/signals';
+import { FormField, FormRoot } from '@angular/forms/signals';
 import { CurrencyPipe } from '@angular/common';
-import { CalculatorType, InvestmentCalculationResults, InvestmentCalculationStats, MortgageCalculationResults, MortgageCalculationStats, TimeUnit } from './models/calculator.model';
+import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculationStats, MortgageCalculationResults, MortgageCalculationStats, State, TimeUnit } from './models/calculator.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Chart } from 'chart.js/auto'
 
 @Component({
   selector: 'app-finance-calculators',
-  imports: [ANGULAR_MATERIAL_MODULES, FormField, CurrencyPipe],
+  imports: [ANGULAR_MATERIAL_MODULES, FormField, CurrencyPipe, FormRoot],
   templateUrl: './finance-calculators.html',
   styleUrl: './finance-calculators.scss',
 })
@@ -34,6 +34,8 @@ export class FinanceCalculators {
   calculatorType = CalculatorType
   timeUnit = TimeUnit
   timeUnits: TimeUnit[] = Object.values(TimeUnit)
+  filingStatuses: FilingStatus[] = Object.values(FilingStatus)
+  states: State[] = Object.values(State)
 
 
   investmentDataSource = computed(() => {

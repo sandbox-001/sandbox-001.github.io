@@ -60,7 +60,7 @@ export interface MortgageCalculationStats {
 
 export interface PayrollTaxApiRequest {
     workState: State,
-    payDate: Date,
+    payDate: string,
     residenceState: State,
     grossWages: number,
     payPeriod: PayPeriod,
@@ -88,7 +88,6 @@ export interface Tax {
 export enum FilingStatus {
     Single = 'single',
     Married = 'married',
-    Head_of_household = 'head_of_household'
 }
 
 export enum PayPeriod {

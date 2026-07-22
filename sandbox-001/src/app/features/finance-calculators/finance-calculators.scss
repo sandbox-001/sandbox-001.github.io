@@ -59,6 +59,28 @@
 
 }
 
+.tax-calculator-form {
+    display: grid;
+    gap: 1em;
+    justify-items: center;
+
+    .tax-button {
+        position: relative;
+        display: inline-block;
+        align-items: center;
+        justify-items: center;
+
+        mat-icon {
+            position: absolute;
+            right: -1.2em;
+            top: 20%;
+        }
+
+    }
+    
+}
+
+
 .details {
     display: grid;
     gap: 2em;

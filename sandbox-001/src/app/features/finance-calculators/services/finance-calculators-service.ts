@@ -48,7 +48,7 @@ export class FinanceCalculatorsService {
 
     taxCalculatorModel = signal<PayrollTaxApiRequest>({
         workState: State.New_York,
-        payDate: new Date(new Date().getFullYear(), 0, 1),
+        payDate: new Date().getFullYear().toString(),
         residenceState: State.New_York,
         grossWages: 100000,
         payPeriod: PayPeriod.Annual,
@@ -250,7 +250,7 @@ export class FinanceCalculatorsService {
 
     getTaxRates() {
         this.storeTaxCalculatorModel(this.taxCalculatorModel())
-        
+
         this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).subscribe({
             next: (response) => {
                 this.taxRateResult.set(response)

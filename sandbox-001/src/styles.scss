@@ -49,6 +49,11 @@ html {
     row-item-outline-color: var(--mat-sys-on-secondary-container)
   ));
 
+  @include mat.menu-overrides((
+    item-hover-state-layer-color: none,
+    item-focus-state-layer-color: none,
+  ));
+
 }
 
 // Compile and apply the mountain Stylesheet via a class modifier

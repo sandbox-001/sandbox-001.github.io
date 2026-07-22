@@ -221,10 +221,65 @@
 
     <!-- Use the [hidden]="" attribute instead of @if, in order to keep paginator and chart lifecycle -->
     <div [hidden]="financeCalculatorsService.calculatorTypeModel() !== calculatorType.Tax" class="investment-calculator">
-        <div class="placeholder">
+        <!-- <div class="placeholder">
             <mat-icon>construction</mat-icon>
             <div>This feature is still under construction!</div>
-        </div>
+            
+        </div> -->
+        <form class="tax-calculator-form" [formRoot]="financeCalculatorsService.taxCalculatorForm" (submit)="financeCalculatorsService.getTaxRates()">
+            <div class="calculator-form">
+                <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>Annual Gross Wages</mat-label>
+                    <div matTextPrefix>$</div>
+                    <input type="number" matInput [formField]="financeCalculatorsService.taxCalculatorForm.grossWages" (blur)="autoFillIfBlankInvestment()">
+                </mat-form-field>
+
+                <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>Filing Status</mat-label>
+                    <div matTextPrefix>&nbsp;&nbsp;</div>
+                    <mat-select [formField]="financeCalculatorsService.taxCalculatorForm.filingStatus" hideSingleSelectionIndicator="true">
+                        @for (filingStatus of filingStatuses; track filingStatus) {
+                            <mat-option [value]="filingStatus">{{filingStatus.slice(0, 1).toUpperCase() + filingStatus.slice(1)}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field form="a" subscriptSizing="dynamic">
+                    <mat-label>Work State</mat-label>
+                    <div matTextPrefix>&nbsp;&nbsp;</div>
+                    <mat-select [formField]="financeCalculatorsService.taxCalculatorForm.workState" hideSingleSelectionIndicator="true">
+                        @for (state of states; track state) {
+                            <mat-option [value]="state">{{state}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>Residence State</mat-label>
+                    <div matTextPrefix>&nbsp;&nbsp;</div>
+                    <mat-select [formField]="financeCalculatorsService.taxCalculatorForm.residenceState" hideSingleSelectionIndicator="true">
+                        @for (state of states; track state) {
+                            <mat-option [value]="state">{{state}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="tax-button">
+                <button class="reference-element" matButton="filled" type="submit">Submit</button>
+                <mat-icon [matMenuTriggerFor]="toolTip" matTooltip="Click Me!" matTooltipTouchGestures="off">warning</mat-icon>
+                <mat-menu #toolTip="matMenu">
+                    <div mat-menu-item>
+                        I only have 1000 API requests a month for fetching tax info. So that means everyone using this site also shares the same 1000 clicks of the Submit button per month.
+                    </div>
+                </mat-menu>
+            </div>
+            
+        </form>
+
+        @for (tax of financeCalculatorsService.taxRateResult()?.taxes; track tax) {
+            <div>{{tax.name}}</div>
+        }
     </div>
         
     
