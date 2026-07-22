@@ -59,30 +59,37 @@ export interface MortgageCalculationStats {
 }
 
 export interface PayrollTaxApiRequest {
-    workState: State,
-    payDate: string,
-    residenceState: State,
-    grossWages: number,
-    payPeriod: PayPeriod,
-    filingStatus: FilingStatus,
-    allowances: number
+    workState: State;
+    payDate: string;
+    residenceState: State;
+    grossWages: number;
+    payPeriod: PayPeriod;
+    filingStatus: FilingStatus;
+    allowances: number;
 }
 
 export interface PayrollTaxApiResponse {
-    taxes: Tax[]
+    taxes: Tax[];
 }
 
 export interface Tax {
-    category: string
-    effective_date: string,
-    jurisdiction: string,
-    name: string,
-    rate: number
-    rate_structure: string,
-    supplemental_rate: number
-    tax_type_code: string
-    taxpayer_side: string
-    wage_base: number
+    brackets: Bracket;
+    category: string;
+    effective_date: string;
+    jurisdiction: string;
+    name: string;
+    rate: number;
+    rate_structure: string;
+    supplemental_rate: number;
+    tax_type_code: string;
+    taxpayer_side: string;
+    wage_base: number;
+}
+
+export interface Bracket {
+    from: number;
+    rate: number;
+    to: number;
 }
 
 export enum FilingStatus {

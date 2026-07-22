@@ -278,7 +278,13 @@
         </form>
 
         @for (tax of financeCalculatorsService.taxRateResult()?.taxes; track tax) {
-            <div>{{tax.name}}</div>
+            @if (tax.taxpayer_side === 'employee') {
+                @if (tax.category === 'income' || tax.category === 'fica_social_security' || tax.category === 'fica_medicare') {
+                    @if (!tax.name.includes('Additional')) {
+                        <div>{{tax.name}}</div>
+                    }
+                }
+            }
         }
     </div>
         
