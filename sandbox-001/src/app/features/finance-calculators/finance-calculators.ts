@@ -238,16 +238,16 @@ export class FinanceCalculators {
           {
             label: 'Principal',
             data: [],
-            borderColor: '#10b981', // Green line
-            backgroundColor: '#10b981',
+            borderColor: '#3b82f6', // Green line
+            backgroundColor: '#3b82f6',
             borderWidth: 1,
             stack: 'stack 1'
           },
           {
             label: 'Interest',
             data: [],
-            borderColor: '#3b82f6', // Blue line
-            backgroundColor: '#3b82f6',
+            borderColor: '#f59e0b', // Blue line
+            backgroundColor: '#f59e0b',
             borderWidth: 1,
             stack: 'stack 1'
           }
@@ -406,6 +406,12 @@ export class FinanceCalculators {
     }
     if (this.financeCalculatorsService.mortgageCalculatorModel().interestRate === null) {
       this.financeCalculatorsService.mortgageCalculatorModel.update((model) => ({...model, interestRate: 0}))
+    }
+  }
+
+  autoFillIfBlankTax() {
+    if (this.financeCalculatorsService.taxCalculatorModel().grossWages === null) {
+      this.financeCalculatorsService.taxCalculatorModel.update((model) => ({...model, grossWages: 1}))
     }
   }
 }

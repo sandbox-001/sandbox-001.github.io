@@ -1,6 +1,6 @@
 import { computed, inject, Service, signal } from '@angular/core';
-import { Bracket, CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MarginalPayableTax, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, PayrollTaxLocalStorageObject, State, Tax, TimeUnit } from '../models/calculator.model';
-import { form, min, pattern, required } from '@angular/forms/signals';
+import { Bracket, CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayableTax, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, PayrollTaxLocalStorageObject, State, Tax, TimeUnit } from '../models/calculator.model';
+import { form, MAX_NUMBER, min, pattern, required } from '@angular/forms/signals';
 import { PayrollTaxApiService } from './payroll-tax-api-service';
 import { map } from 'rxjs';
 
@@ -57,7 +57,7 @@ export class FinanceCalculatorsService {
         allowances: 0
     })
     taxCalculatorForm = form(this.taxCalculatorModel, (schemaPath) => {
-        min(schemaPath.grossWages, 0, {message: 'Starting Amount cannot be negative'})
+        min(schemaPath.grossWages, 1, {message: 'Starting Amount cannot be negative'})
     })
 
     taxRateResult = signal<PayrollTaxApiResponse | undefined>(undefined)
@@ -254,15 +254,15 @@ export class FinanceCalculatorsService {
         return results;
     }
 
-    getTaxRates() {
+    getTaxInfo() {
 
         this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).pipe(
             map((response: PayrollTaxApiResponse) => {
                 const editedResponse: PayrollTaxApiResponse = {
                     grossWages: this.taxCalculatorModel().grossWages,
                     taxes: response.taxes,
-                    workState: response.workState,
-                    residenceState: response.residenceState
+                    work_state: response.work_state,
+                    residence_state: response.residence_state
                 }
                 return editedResponse
             })
@@ -284,46 +284,91 @@ export class FinanceCalculatorsService {
         })
     }
 
-    getEstimatedMarginalTaxes(grossWages: number, tax: Tax): MarginalPayableTax {
+    getSpecificStateTax(taxTypeCode: string): Tax {
+        let tax = this.taxRateResult()!.taxes.find((tax: Tax) => tax.tax_type_code === taxTypeCode)
+
+        const emptyStateTax: Tax = {
+            brackets: [{
+                from: 0,
+                rate: 0,
+                to: Number.MAX_VALUE,
+                actualTax: 0
+            }],
+            category: 'income',
+            effective_date: '',
+            jurisdiction: '',
+            name: `${Object.keys(State).find((state) => State[state as keyof typeof State] === taxTypeCode.slice(0, 2))} Income Tax`,
+            rate: 0,
+            rate_structure: '',
+            supplemental_rate: 0,
+            tax_type_code: taxTypeCode,
+            taxpayer_side: '',
+            wage_base: 0
+        }
+        if (tax === undefined) {
+            tax = emptyStateTax
+        }
+
+        return tax
+        
+    }
+
+    getEstimatedTaxes(grossWages: number, tax: Tax): PayableTax {
         let totalPayableTax: number = 0
         let editedBrackets: Bracket[] = []
 
-        tax.brackets.forEach((bracket) => {
-            if (grossWages > bracket.from) {
-                if (grossWages > bracket.to && bracket.to !== null) {
-                    const bracketTax = (bracket.to - bracket.from) * bracket.rate
-                    const editedBracket: Bracket = {
-                        ...bracket,
-                        actualTax: bracketTax
-                    }
-                    editedBrackets.push(editedBracket)
-                    totalPayableTax += bracketTax
+        if (tax.rate_structure === 'flat_percent') {
+            const payableTax: PayableTax = {
+                rate_structure: tax.rate_structure,
+                totalActualTax: grossWages * tax.rate,
+                brackets: editedBrackets
+            }
+            return payableTax
+        }
+        else {
+            tax.brackets.forEach((bracket) => {
+                if (grossWages > bracket.from) {
+                    if (grossWages > bracket.to && bracket.to !== null) {
+                        const bracketTax = (bracket.to - bracket.from) * bracket.rate
+                        const editedBracket: Bracket = {
+                            ...bracket,
+                            actualTax: bracketTax
+                        }
+                        editedBrackets.push(editedBracket)
+                        totalPayableTax += bracketTax
 
+                    }
+                    else {
+                        const bracketTax = (grossWages - bracket.from) * bracket.rate
+                        const editedBracket: Bracket = {
+                            ...bracket,
+                            actualTax: bracketTax
+                        }
+                        editedBrackets.push(editedBracket)
+                        totalPayableTax += bracketTax
+                    }
                 }
                 else {
-                    const bracketTax = (grossWages - bracket.from) * bracket.rate
                     const editedBracket: Bracket = {
                         ...bracket,
-                        actualTax: bracketTax
+                        actualTax: 0
                     }
                     editedBrackets.push(editedBracket)
-                    totalPayableTax += bracketTax
                 }
-            }
-            else {
-                const editedBracket: Bracket = {
-                    ...bracket,
-                    actualTax: 0
-                }
-                editedBrackets.push(editedBracket)
-            }
-        })
+            })
 
-        const payableTax: MarginalPayableTax = {
-            totalActualTax: totalPayableTax,
-            brackets: editedBrackets
+            const payableTax: PayableTax = {
+                rate_structure: tax.rate_structure,
+                totalActualTax: totalPayableTax,
+                brackets: editedBrackets
+            }
+            return payableTax
         }
-        return payableTax
+        
+        
+    
+
+        
 
     }
 }

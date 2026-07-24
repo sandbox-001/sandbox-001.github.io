@@ -76,8 +76,8 @@ export interface PayrollTaxApiRequest {
 export interface PayrollTaxApiResponse {
     grossWages: number;
     taxes: Tax[];
-    workState: State;
-    residenceState: State;
+    work_state: State;
+    residence_state: State;
 }
 
 export interface Tax {
@@ -94,7 +94,8 @@ export interface Tax {
     wage_base: number;
 }
 
-export interface MarginalPayableTax {
+export interface PayableTax {
+    rate_structure: string;
     totalActualTax: number;
     brackets: Bracket[]
 }

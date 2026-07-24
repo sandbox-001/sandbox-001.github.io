@@ -220,18 +220,18 @@
     </div>
 
     <!-- Use the [hidden]="" attribute instead of @if, in order to keep paginator and chart lifecycle -->
-    <div [hidden]="financeCalculatorsService.calculatorTypeModel() !== calculatorType.Tax" class="investment-calculator">
+    <div [hidden]="financeCalculatorsService.calculatorTypeModel() !== calculatorType.Tax" class="tax-calculator">
         <!-- <div class="placeholder">
             <mat-icon>construction</mat-icon>
             <div>This feature is still under construction!</div>
             
         </div> -->
-        <form class="tax-calculator-form" [formRoot]="financeCalculatorsService.taxCalculatorForm" (submit)="financeCalculatorsService.getTaxRates()">
+        <form class="tax-calculator-form" [formRoot]="financeCalculatorsService.taxCalculatorForm" (submit)="financeCalculatorsService.getTaxInfo()">
             <div class="calculator-form">
                 <mat-form-field subscriptSizing="dynamic">
                     <mat-label>Taxable Income</mat-label>
                     <div matTextPrefix>$</div>
-                    <input type="number" matInput [formField]="financeCalculatorsService.taxCalculatorForm.grossWages" (blur)="autoFillIfBlankInvestment()">
+                    <input type="number" matInput [formField]="financeCalculatorsService.taxCalculatorForm.grossWages" (blur)="autoFillIfBlankTax()">
                 </mat-form-field>
 
                 <mat-form-field subscriptSizing="dynamic">
@@ -282,23 +282,23 @@
             @let federalIncomeTax = financeCalculatorsService.taxRateResult()!.taxes.find((tax) => tax.tax_type_code === 'FED_INCOME_EE')!;
             @let socialSecurityTax = financeCalculatorsService.taxRateResult()!.taxes.find((tax) => tax.tax_type_code === 'FED_FICA_SS_EE')!;
             @let medicareTax = financeCalculatorsService.taxRateResult()!.taxes.find((tax) => tax.tax_type_code === 'FED_FICA_MED_EE')!;
-            @let workStateTax = financeCalculatorsService.taxRateResult()!.taxes.find((tax) => tax.tax_type_code === `${financeCalculatorsService.taxCalculatorModel().workState}_INCOME_EE`)!;
-            @let residenceStateTax = financeCalculatorsService.taxRateResult()!.taxes.find((tax) => tax.tax_type_code === `${financeCalculatorsService.taxCalculatorModel().residenceState}_INCOME_EE`)!;
-            @let workState = financeCalculatorsService.taxRateResult()!.workState;
-            @let residenceState = financeCalculatorsService.taxRateResult()!.residenceState;
+            @let workStateTax = financeCalculatorsService.getSpecificStateTax(financeCalculatorsService.taxRateResult()!.work_state + '_INCOME_EE');
+            @let residenceStateTax = financeCalculatorsService.getSpecificStateTax(financeCalculatorsService.taxRateResult()!.residence_state + '_INCOME_EE');
+            @let workState = financeCalculatorsService.taxRateResult()!.work_state;
+            @let residenceState = financeCalculatorsService.taxRateResult()!.residence_state;
 
             <div class="details">
                 <div class="results">
                     <h2>Results</h2>
                     <div class="result-stats result-stats-tax">
                         @if (workState !== residenceState) {
-                            @let totalTax = (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, workStateTax).totalActualTax) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, residenceStateTax).totalActualTax);
+                            @let totalTax = (financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedTaxes(grossWages, workStateTax).totalActualTax) + (financeCalculatorsService.getEstimatedTaxes(grossWages, residenceStateTax).totalActualTax);
                             <div><strong>Take Home Pay: </strong></div>
                             <div class="result-numbers"></div>
                             <div class="result-numbers"><strong>{{grossWages - totalTax | currency}}</strong></div>
                         }
                         @else {
-                            @let totalTax = (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, workStateTax).totalActualTax);
+                            @let totalTax = (financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedTaxes(grossWages, workStateTax).totalActualTax);
                             <div><strong>Take Home Pay: </strong></div>
                             <div class="result-numbers"></div>
                             <div class="result-numbers"><strong>{{grossWages - totalTax | currency}}</strong></div>
@@ -309,7 +309,7 @@
                     <div class="result-stats result-stats-tax">
                         <div>{{federalIncomeTax.name}}</div>
                         <div class="result-numbers">{{federalIncomeTax.brackets.find((bracket) => bracket.from < grossWages && (grossWages <= bracket.to || bracket.to === null))!.rate | percent}}</div>
-                        <div class="result-numbers">{{financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).totalActualTax | currency}}</div>
+                        <div class="result-numbers">{{financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).totalActualTax | currency}}</div>
 
 
                         <div>Social Security</div>
@@ -321,24 +321,32 @@
                         <div class="result-numbers">{{grossWages * medicareTax.rate | currency}}</div>
 
 
-                        <div class="state-tax">{{workStateTax.name}}</div>
-                        <div class="result-numbers state-tax">{{workStateTax.brackets.find((bracket) => bracket.from < grossWages && (grossWages <= bracket.to || bracket.to === null))!.rate | percent}}</div>
-                        <div class="result-numbers state-tax">{{financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, workStateTax).totalActualTax | currency}}</div>
-
-
+                        <div class="state-tax">{{workStateTax.name}} {{workStateTax.rate_structure === 'flat_percent' ? '(Flat)' : ''}}</div>
+                        @if (workStateTax.rate_structure === 'flat_percent') {
+                            <div class="result-numbers state-tax">{{workStateTax.rate | percent}}</div>
+                        }
+                        @else {
+                            <div class="result-numbers state-tax">{{workStateTax.brackets.find((bracket) => bracket.from < grossWages && (grossWages <= bracket.to || bracket.to === null))!.rate | percent}}</div>
+                        }
+                        <div class="result-numbers state-tax">{{financeCalculatorsService.getEstimatedTaxes(grossWages, workStateTax).totalActualTax | currency}}</div>
                         
                         @if (workState !== residenceState) {
-                            <div>{{residenceStateTax.name}}</div>
-                            <div class="result-numbers">{{residenceStateTax.brackets.find((bracket) => bracket.from < grossWages && (grossWages <= bracket.to || bracket.to === null))!.rate | percent}}</div>
-                            <div class="result-numbers">{{financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, residenceStateTax).totalActualTax | currency}}</div>
+                            <div>{{residenceStateTax.name}} {{residenceStateTax.rate_structure === 'flat_percent' ? '(Flat)' : ''}}</div>
+                            @if (residenceStateTax.rate_structure === 'flat_percent') {
+                                <div class="result-numbers">{{residenceStateTax.rate | percent}}</div>
+                            }
+                            @else {
+                                <div class="result-numbers">{{residenceStateTax.brackets.find((bracket) => bracket.from < grossWages && (grossWages <= bracket.to || bracket.to === null))!.rate | percent}}</div>
+                            }
+                            <div class="result-numbers">{{financeCalculatorsService.getEstimatedTaxes(grossWages, residenceStateTax).totalActualTax | currency}}</div>
 
-                            @let totalTax = (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, workStateTax).totalActualTax) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, residenceStateTax).totalActualTax);
+                            @let totalTax = (financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedTaxes(grossWages, workStateTax).totalActualTax) + (financeCalculatorsService.getEstimatedTaxes(grossWages, residenceStateTax).totalActualTax);
                             <div class="top-border"><strong>Total Tax: </strong></div>
                             <div class="result-numbers top-border"></div>
                             <div class="result-numbers top-border"><strong>{{totalTax | currency}}</strong></div>
                         }
                         @else {
-                            @let totalTax = (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, workStateTax).totalActualTax);
+                            @let totalTax = (financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).totalActualTax) + (grossWages * socialSecurityTax.rate) + (grossWages * medicareTax.rate) + (financeCalculatorsService.getEstimatedTaxes(grossWages, workStateTax).totalActualTax);
                             <div class="top-border"><strong>Total Tax: </strong></div>
                             <div class="result-numbers top-border"></div>
                             <div class="result-numbers top-border"><strong>{{totalTax | currency}}</strong></div>
@@ -351,11 +359,11 @@
                 </div>
             </div>
 
-            <div>
-                @for (bracket of financeCalculatorsService.getEstimatedMarginalTaxes(grossWages, federalIncomeTax).brackets; track bracket.rate) {
+            <!-- <div>
+                @for (bracket of financeCalculatorsService.getEstimatedTaxes(grossWages, federalIncomeTax).brackets; track bracket.rate) {
                     <div>from: {{bracket.from}} | to: {{bracket.to}} | rate: {{bracket.rate}} | tax: {{bracket.actualTax}}</div>
                 }
-            </div>
+            </div> -->
 
             
         }
