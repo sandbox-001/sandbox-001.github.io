@@ -94,10 +94,16 @@ export interface Tax {
     wage_base: number;
 }
 
+export interface MarginalPayableTax {
+    totalActualTax: number;
+    brackets: Bracket[]
+}
+
 export interface Bracket {
     from: number;
     rate: number;
     to: number;
+    actualTax: number;
 }
 
 export enum FilingStatus {

@@ -1,5 +1,5 @@
 import { computed, inject, Service, signal } from '@angular/core';
-import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, PayrollTaxLocalStorageObject, State, Tax, TimeUnit } from '../models/calculator.model';
+import { Bracket, CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MarginalPayableTax, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, PayrollTaxLocalStorageObject, State, Tax, TimeUnit } from '../models/calculator.model';
 import { form, min, pattern, required } from '@angular/forms/signals';
 import { PayrollTaxApiService } from './payroll-tax-api-service';
 import { map } from 'rxjs';
@@ -186,10 +186,10 @@ export class FinanceCalculatorsService {
             totalPrincipalPaid: 0,
             stats: []
         }
-        
+
         // Convert annual percentage rate to a monthly decimal rate (r)
         const monthlyRate = (mortgageCalculatorModel.interestRate / 100) / 12;
-        
+
         // Total number of monthly payments (n)
         const totalPayments = mortgageCalculatorModel.mortgageTermYears * 12;
 
@@ -205,7 +205,7 @@ export class FinanceCalculatorsService {
             results.totalPrincipalPaid += flatPayment
 
             balance -= flatPayment;
-            results.stats.push({    
+            results.stats.push({
                 month: m,
                 monthlyPayment: flatPayment,
                 interest: 0,
@@ -217,16 +217,16 @@ export class FinanceCalculatorsService {
         }
 
         // Step 1: Calculate the fixed monthly P&I payment (M)
-        const exactPayment = mortgageCalculatorModel.mortgageAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / 
+        const exactPayment = mortgageCalculatorModel.mortgageAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) /
                             (Math.pow(1 + monthlyRate, totalPayments) - 1);
-        
+
         let remainingBalance = mortgageCalculatorModel.mortgageAmount;
 
         // Step 2: Loop through each month to calculate interest and principal components
         for (let month = 1; month <= totalPayments; month++) {
         // Calculate monthly interest based on current remaining balance
         const interestPayment = remainingBalance * monthlyRate;
-        
+
         // Principal part is the total payment minus the interest part
         let principalPayment = exactPayment - interestPayment;
 
@@ -279,25 +279,50 @@ export class FinanceCalculatorsService {
                 console.error(err)
             },
             complete: () => {
-                
+
             }
         })
     }
 
-    getEstimatedMarginalTaxes(grossWages: number, tax: Tax): number {
-        let payableTax: number = 0
+    getEstimatedMarginalTaxes(grossWages: number, tax: Tax): MarginalPayableTax {
+        let totalPayableTax: number = 0
+        let editedBrackets: Bracket[] = []
 
         tax.brackets.forEach((bracket) => {
             if (grossWages > bracket.from) {
                 if (grossWages > bracket.to && bracket.to !== null) {
-                    payableTax += (bracket.to - bracket.from) * bracket.rate
+                    const bracketTax = (bracket.to - bracket.from) * bracket.rate
+                    const editedBracket: Bracket = {
+                        ...bracket,
+                        actualTax: bracketTax
+                    }
+                    editedBrackets.push(editedBracket)
+                    totalPayableTax += bracketTax
+
                 }
                 else {
-                    payableTax += (grossWages - bracket.from) * bracket.rate
+                    const bracketTax = (grossWages - bracket.from) * bracket.rate
+                    const editedBracket: Bracket = {
+                        ...bracket,
+                        actualTax: bracketTax
+                    }
+                    editedBrackets.push(editedBracket)
+                    totalPayableTax += bracketTax
                 }
+            }
+            else {
+                const editedBracket: Bracket = {
+                    ...bracket,
+                    actualTax: 0
+                }
+                editedBrackets.push(editedBracket)
             }
         })
 
+        const payableTax: MarginalPayableTax = {
+            totalActualTax: totalPayableTax,
+            brackets: editedBrackets
+        }
         return payableTax
 
     }
