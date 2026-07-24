@@ -58,6 +58,11 @@ export interface MortgageCalculationStats {
     remainingBalance: number;
 }
 
+export interface PayrollTaxLocalStorageObject {
+    request: PayrollTaxApiRequest;
+    response: PayrollTaxApiResponse | undefined;
+}
+
 export interface PayrollTaxApiRequest {
     workState: State;
     payDate: string;

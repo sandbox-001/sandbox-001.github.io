@@ -1,5 +1,5 @@
 import { computed, inject, Service, signal } from '@angular/core';
-import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, State, Tax, TimeUnit } from '../models/calculator.model';
+import { CalculatorType, FilingStatus, InvestmentCalculationResults, InvestmentCalculatorModel, MortgageCalculationResults, MortgageCalculatorModel, PayPeriod, PayrollTaxApiRequest, PayrollTaxApiResponse, PayrollTaxLocalStorageObject, State, Tax, TimeUnit } from '../models/calculator.model';
 import { form, min, pattern, required } from '@angular/forms/signals';
 import { PayrollTaxApiService } from './payroll-tax-api-service';
 import { map } from 'rxjs';
@@ -93,12 +93,17 @@ export class FinanceCalculatorsService {
         }
 
         // initialize taxCalculatorModel in localstorage
-        if (localStorage.getItem('tax-calculator-model')) {
-            const storedTaxCalculatorModel = JSON.parse(localStorage.getItem('tax-calculator-model')!)
-            this.taxCalculatorModel.set(storedTaxCalculatorModel)
+        if (localStorage.getItem('tax-calculator-local-storage-object')) {
+            const storedTaxCalculatorLocalStorageObject: PayrollTaxLocalStorageObject = JSON.parse(localStorage.getItem('tax-calculator-local-storage-object')!)
+            this.taxCalculatorModel.set(storedTaxCalculatorLocalStorageObject.request)
+            this.taxRateResult.set(storedTaxCalculatorLocalStorageObject.response)
         }
         else {
-            this.storeTaxCalculatorModel(this.taxCalculatorModel())
+            const taxCalculatorLocalStorageObject: PayrollTaxLocalStorageObject = {
+                request: this.taxCalculatorModel(),
+                response: this.taxRateResult()
+            }
+            this.storeTaxCalculatorLocalStorageObject(taxCalculatorLocalStorageObject)
         }
 
     }
@@ -118,8 +123,8 @@ export class FinanceCalculatorsService {
         localStorage.setItem('mortgage-calculator-model', JSON.stringify(mortgageCalculatorModel));
     }
 
-    private storeTaxCalculatorModel(taxCalculatorModel: PayrollTaxApiRequest) {
-        localStorage.setItem('tax-calculator-model', JSON.stringify(taxCalculatorModel));
+    private storeTaxCalculatorLocalStorageObject(taxCalculatorLocalStorageObject: PayrollTaxLocalStorageObject) {
+        localStorage.setItem('tax-calculator-local-storage-object', JSON.stringify(taxCalculatorLocalStorageObject));
     }
 
 
@@ -250,7 +255,6 @@ export class FinanceCalculatorsService {
     }
 
     getTaxRates() {
-        this.storeTaxCalculatorModel(this.taxCalculatorModel())
 
         this.payrollTaxApiService.getRatesLookup(this.taxCalculatorModel()).pipe(
             map((response: PayrollTaxApiResponse) => {
@@ -265,6 +269,11 @@ export class FinanceCalculatorsService {
         ).subscribe({
             next: (response) => {
                 this.taxRateResult.set(response)
+                const newTaxCalculatorObject: PayrollTaxLocalStorageObject = {
+                    request: this.taxCalculatorModel(),
+                    response: this.taxRateResult()
+                }
+                this.storeTaxCalculatorLocalStorageObject(newTaxCalculatorObject)
             },
             error: (err) => {
                 console.error(err)
@@ -280,11 +289,11 @@ export class FinanceCalculatorsService {
 
         tax.brackets.forEach((bracket) => {
             if (grossWages > bracket.from) {
-                if (grossWages > bracket.to) {
-                    payableTax += bracket.to * bracket.rate
+                if (grossWages > bracket.to && bracket.to !== null) {
+                    payableTax += (bracket.to - bracket.from) * bracket.rate
                 }
                 else {
-                    payableTax += (grossWages - (bracket.from)) * bracket.rate
+                    payableTax += (grossWages - bracket.from) * bracket.rate
                 }
             }
         })
