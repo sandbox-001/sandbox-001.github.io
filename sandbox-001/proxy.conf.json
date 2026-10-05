@@ -14,5 +14,13 @@
     "pathRewrite": {
       "^/api-vidsrc-vidsrcme.ru": ""
     }
+  },
+  "/api-vidsrc-vidsrc.sh": {
+    "target": "https://vidsrc.sh",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api-vidsrc-vidsrc.sh": ""
+    }
   }
 }

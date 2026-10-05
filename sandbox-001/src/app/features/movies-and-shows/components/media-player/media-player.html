@@ -146,18 +146,12 @@
                     @else {
 
                         @if (safeVidsrcUrl()) {
-                            @if (media_type() === mediaTypeEnum.Movie) {
-                                <iframe class="media-container" referrerpolicy="no-referrer" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
-                            }
-                            @else {
-                                <iframe class="media-container" referrerpolicy="no-referrer" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
-                            }
+                            <iframe class="media-container" referrerpolicy="no-referrer" [src]="safeVidsrcUrl()" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
                         }
                         
                     }
                 }
             }
-
             
             @if (media_type() === mediaTypeEnum.TV && selectedTVDetail() && selectedSeasonDetail() && selectedEpisodeDetail()) {
                 @let season = selectedSeasonDetail()!;

@@ -12,10 +12,11 @@ export class VidsrcApiService {
     // Base Url proxys for localhost testing (remember to rebuild and npm start after changing the proxies in proxy.conf.json)
     // private VIDSRC_DOMAINS_URL = '/api-vidsrc-domains'
     // private VIDSRC_API = '/api-vidsrc-vidsrcme.ru'
+    // private VIDSRC_API = '/api-vidsrc-vidsrc.sh'
 
     // Base Urls for deployments
     private VIDSRC_DOMAINS_URL = 'https://vidsrc.domains'
-    private VIDSRC_API = 'https://vidsrcme.ru'
+    private VIDSRC_API = 'https://vidsrc.sh'
 
 
 
@@ -25,52 +26,19 @@ export class VidsrcApiService {
     private vidsrcMovieUrl = this.vidsrcBaseUrl + '/embed/movie?tmdb='
     private vidsrcTVUrl = this.vidsrcBaseUrl + '/embed/tv?tmdb='
 
-    private httpOptions = {
-        responseType: 'text',
-        // observe: 'response'
-    } as const
-
-    // getVidSrcDomains() {
-    //     return this.http.get(this.vidsrcDomainsUrl, this.httpOptions).pipe(
-    //         map((response) => {
-    //             console.log(response)
-    //         })
-    //     )
-    // }
-
     getVidsrcMovie(movieId: number): Observable<SafeResourceUrl> {
         // disable correct return for iframe src
-        return of('')
+        // return of('')
         
-        // return this.http.get(this.vidsrcMovieUrl + movieId, this.httpOptions).pipe(
-        //     map((response) => {
-        //         return this.sanitizer.bypassSecurityTrustResourceUrl(this.extractIframeSrc(response))
-        //     })
-        // )
+        return of(this.sanitizer.bypassSecurityTrustResourceUrl(this.vidsrcMovieUrl + movieId))
+        
     }
 
     getVidsrcTV(tvId: number, season: number, episode: number): Observable<SafeResourceUrl> {
         // disable correct return for iframe src
-        return of('')
+        // return of('')
 
-        // return this.http.get(this.vidsrcTVUrl + `${tvId}&season=${season}&episode=${episode}`, this.httpOptions).pipe(
-        //     map((response) => {
-        //         return this.sanitizer.bypassSecurityTrustResourceUrl(this.extractIframeSrc(response))
-        //     })
-        // )
-    }
-
-    extractIframeSrc(rawHtml: string): string {
-        if (!rawHtml) return '';
-
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(rawHtml, 'text/html');
-
-        // Query for the first iframe element in the document
-        const iframe = doc.querySelector('iframe');
-        
-        // Return the src attribute if it exists, otherwise an empty string
-        return iframe ? (iframe.getAttribute('src') || '') : '';
+        return of(this.sanitizer.bypassSecurityTrustResourceUrl(this.vidsrcTVUrl + `${tvId}&season=${season}&episode=${episode}`))
     }
 
 }
