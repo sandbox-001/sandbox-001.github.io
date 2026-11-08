@@ -904,6 +904,93 @@
           "text": "450F in oven, flip after 20 min, should take around another 20-30 min to finish"
         }
       ]
+    },
+    {
+      "id": 13,
+      "name": "Tomato and Egg stir fry",
+      "description": "Tomatoes and eggs, eat with rice",
+      "author": "me",
+      "image": "/recipes/images/tomatoes_and_eggs.png",
+      "ingredients": [
+        {
+          "item": "tomato (on-the-vine or roma)",
+          "amount": 1,
+          "unit": ""
+        },
+        {
+          "item": "green onion",
+          "amount": 1,
+          "unit": ""
+        },
+        {
+          "item": "eggs",
+          "amount": 3,
+          "unit": ""
+        },
+        {
+          "item": "salt",
+          "amount": 3,
+          "unit": "pinches"
+        },
+        {
+          "item": "msg",
+          "amount": 1,
+          "unit": "pinch"
+        },
+        {
+          "item": "ketchup",
+          "amount": 0.5,
+          "unit": "Tablespoon"
+        },
+        {
+          "item": "oyster sauce",
+          "amount": 0.5,
+          "unit": "Tablespoon"
+        },
+        {
+          "item": "soy sauce",
+          "amount": 0.5,
+          "unit": "Tablespoon"
+        }
+      ],
+      "instructions": [
+        {
+          "step": 1,
+          "text": "Preheat the pan, cut the tomato into bite sized pieces, slice green onions for garnish"
+        },
+        {
+          "step": 2,
+          "text": "Put a bit of olive oil and lower the heat"
+        },
+        {
+          "step": 3,
+          "text": "Put the tomatoes in and cover with lid (5 min)"
+        },
+        {
+          "step": 4,
+          "text": "Crack the eggs into a bowl, season with salt and msg, beat the eggs"
+        },
+        {
+          "step": 5,
+          "text": "Pour the eggs in with the tomatoes, cover with lid (5 min)"
+        },
+        {
+          "step": 6,
+          "text": "Take off lid and add ketchup, oyster sauce, soy sauce"
+        },
+        {
+          "step": 7,
+          "text": "Stir and deglaze the pan"
+        },
+        {
+          "step": 8,
+          "text": "Add green onions as garnish, mix"
+        },
+        {
+          "step": 9,
+          "text": "Serve with rice"
+        }
+      ]
     }
   ],
   
