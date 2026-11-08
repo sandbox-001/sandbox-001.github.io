@@ -211,9 +211,14 @@
           "unit": "Pack"
         },
         {
-          "item": "ground pork",
+          "item": "ground pork (80/20) or ground beef (80/20)",
           "amount": 1,
           "unit": "Pound"
+        },
+        {
+          "item": "firm tofu (~5oz)",
+          "amount": 0.3,
+          "unit": "Package"
         },
         {
           "item": "napa cabbage/배추",
@@ -221,23 +226,23 @@
           "unit": "Pound"
         },
         {
-          "item": "glass noodles/당면",
-          "amount": 1,
-          "unit": "Ounce"
+          "item": "glass noodles/당면 (hydrated and chopped)",
+          "amount": 0.1,
+          "unit": "Cups"
         },
         {
-          "item": "chives",
-          "amount": 1,
-          "unit": "Handful"
+          "item": "chives (finely chopped)",
+          "amount": 0.5,
+          "unit": "Cups"
         },
         {
-          "item": "green onions",
-          "amount": 1,
-          "unit": "Handful"
+          "item": "green onions (finely chopped)",
+          "amount": 0.5,
+          "unit": "Cups"
         },
         {
           "item": "minced garlic",
-          "amount": 1,
+          "amount": 2,
           "unit": "Tablespoon"
         },
         {
@@ -251,6 +256,11 @@
           "unit": "Tablespoon"
         },
         {
+          "item": "oyster sauce",
+          "amount": 1,
+          "unit": "Tablespoon"
+        },
+        {
           "item": "sesame oil",
           "amount": 1,
           "unit": "Tablespoon"
@@ -258,7 +268,7 @@
         {
           "item": "sugar",
           "amount": 1,
-          "unit": "Teaspoon"
+          "unit": "Tablespoon"
         },
         {
           "item": "kosher salt",
@@ -269,41 +279,53 @@
           "item": "black pepper",
           "amount": 1,
           "unit": "Teaspoon"
+        },
+        {
+          "item": "msg",
+          "amount": 1,
+          "unit": "pinch"
         }
       ],
       "instructions": [
         {
           "step": 1,
-          "text": "Soak glass noodles in cold water (1 hour)"
+          "text": "Soak glass noodles in cold water (1 hour), move to the next step while we wait"
         },
         {
           "step": 2,
-          "text": "Mince napa cabbage and squeeze all of the water out (every last drop)"
+          "text": "Mince napa cabbage and salt with 1 tsp kosher salt (20 min), move to the next step while we wait"
         },
         {
           "step": 3,
-          "text": "Mince glass noodles"
+          "text": "Finely chop chives and green onions"
         },
         {
           "step": 4,
-          "text": "Finely chop chives and green onions"
-        }
-        ,
+          "text": "Squeeze water out of the napa cabbage (either by hand or with a cheesecloth)"
+        },
         {
           "step": 5,
-          "text": "Mix garlic, ginger, soy sauce, sesame oil, sugar, kosher salt, black pepper"
+          "text": "Squeeze water out of the tofu (with a cheesecloth)"
         },
         {
           "step": 6,
-          "text": "Put everything together and knead with hands/gloves until the meat protein develops a sticky, tacky paste"
+          "text": "Chop the glass noodles"
         },
         {
           "step": 7,
-          "text": "Wrap dumplings up, place neatly on a backing sheet lined with parchment paper"
+          "text": "Mix garlic, ginger, soy sauce, oyster sauce, sesame oil, sugar, 2 tsp kosher salt, black pepper, msg"
         },
         {
           "step": 8,
-          "text": "Freeze the baking sheet, then put the frozen dumplings into a freezer bag"
+          "text": "Put everything together and knead with hands/gloves until it becomes a sticky, tacky paste"
+        },
+        {
+          "step": 9,
+          "text": "Wrap dumplings up, place neatly on a baking sheet lined with parchment paper"
+        },
+        {
+          "step": 10,
+          "text": "Freeze the dumplings on the baking sheet, then put the frozen dumplings into a freezer ziplock bag"
         }
       ]
     },
@@ -819,6 +841,67 @@
         {
           "step": 5,
           "text": "Put all the dry grapes in a big ziplock bag and freeze"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Baked Chicken Wings",
+      "description": "Crispy baked wings",
+      "author": "me",
+      "image": "/recipes/images/frozen_grapes.png",
+      "ingredients": [
+        {
+          "item": "chicken wings",
+          "amount": 1,
+          "unit": "Pound"
+        },
+        {
+          "item": "baking powder (aluminum free)",
+          "amount": 1,
+          "unit": "tsp"
+        },
+        {
+          "item": "potato/corn starch",
+          "amount": 1,
+          "unit": "tsp"
+        },
+        {
+          "item": "kosher salt",
+          "amount": 0.5,
+          "unit": "tsp"
+        },
+        {
+          "item": "garlic powder",
+          "amount": 0.5,
+          "unit": "tsp"
+        },
+        {
+          "item": "onion powder",
+          "amount": 0.5,
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        {
+          "step": 1,
+          "text": "Dry the chicken wings thoroughly"
+        },
+        {
+          "step": 2,
+          "text": "Season and toss the wings in a bowl"
+        },
+        {
+          "step": 3,
+          "text": "Place them on a wire rack to air dry in the fridge overnight"
+        },
+        {
+          "step": 4,
+          "text": "Toss and mix in a bowl with a little oil, just enough to barely coat the surface"
+        },
+        {
+          "step": 5,
+          "text": "450F in oven, flip after 20 min, should take around another 20-30 min to finish"
         }
       ]
     }
