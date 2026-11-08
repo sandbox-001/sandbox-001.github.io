@@ -849,7 +849,7 @@
       "name": "Baked Chicken Wings",
       "description": "Crispy baked wings",
       "author": "me",
-      "image": "/recipes/images/frozen_grapes.png",
+      "image": "/recipes/images/baked_wings.png",
       "ingredients": [
         {
           "item": "chicken wings",
